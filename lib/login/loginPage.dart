@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hediaty_sec/HomePage/homePage.dart';
 import 'package:hediaty_sec/widgets/textField.dart';
 import 'package:hediaty_sec/widgets/customButton.dart';
+import 'package:iconsax/iconsax.dart';
 
 class loginPage extends StatelessWidget {
   const loginPage({super.key});
@@ -63,15 +65,15 @@ class loginPage extends StatelessWidget {
                 children: [
                   const SizedBox(height: 50),
                   const Text(
-                    'Enter Your Email',
+                    'Enter Your Phone Number',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const CustomTextField(
-                    hintText: "e.g john@example.com",
-                    icon: Icons.email,
+                    hintText: "01XXXXXXXXX",
+                    icon: Iconsax.mobile,
                   ),
                   const SizedBox(height: 20),
                   const Text(
@@ -105,7 +107,13 @@ class loginPage extends StatelessWidget {
                         foregroundColor:
                             MaterialStateProperty.all(Colors.black),
                       ),
-                      onPressed: () {},
+                      //until login validation is implemented
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Homepage()),
+                        );
+                      },
                       child: const Text("Login"),
                     ),
                   ),
@@ -124,8 +132,10 @@ class loginPage extends StatelessWidget {
                           ss: ' login with facebook',
                           URL: 'lib/assets/icons/facebook.svg',
                         ),
-                        Custombutton(ss: ' login with Google',
-                        URL:'lib/assets/icons/google.svg' ,),
+                        Custombutton(
+                          ss: ' login with Google',
+                          URL: 'lib/assets/icons/google.svg',
+                        ),
                       ],
                     ),
                   ),
