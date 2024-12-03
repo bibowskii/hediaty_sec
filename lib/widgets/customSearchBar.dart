@@ -15,9 +15,9 @@ import 'package:flutter/material.dart';
            prefixIcon: Row(
              mainAxisSize: MainAxisSize.min,
              children: [
-               Padding(
-                 padding: const EdgeInsets.all(8.0),
-                 child: const Icon(
+               const Padding(
+                 padding: EdgeInsets.all(8.0),
+                 child: Icon(
                    Icons.search,
                    color: Colors.black54,
                  ),
@@ -39,6 +39,7 @@ import 'package:flutter/material.dart';
            fillColor: Colors.white,
          ),
          onChanged: (value) {
+
            // Logic for searching to be implemented
          },
        ),

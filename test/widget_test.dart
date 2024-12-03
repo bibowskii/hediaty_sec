@@ -7,14 +7,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hediaty_sec/login/loginPage.dart';
+import 'package:hediaty_sec/screens/login/loginPage.dart';
 
-import 'package:hediaty_sec/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const loginPage());
+    await tester.pumpWidget(loginPage());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

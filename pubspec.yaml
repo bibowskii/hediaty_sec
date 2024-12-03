@@ -38,6 +38,12 @@ dependencies:
   flutter_svg: ^2.0.5
   iconsax: ^0.0.8
   curved_navigation_bar: ^1.0.6 #latest version
+  #sqflite: ^2.2.0
+  path: ^1.8.3
+  firebase_core: ^3.8.0
+  firebase_auth: ^5.3.3
+  provider: ^6.1.2
+  shared_preferences: ^2.3.3
 
 dev_dependencies:
   flutter_test:
@@ -61,7 +67,7 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
+  # To add dummyassets to your application, add an dummyassets section, like this:
   assets:
     - lib/assets/icons/
 
@@ -69,7 +75,7 @@ flutter:
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
-  # For details regarding adding assets from package dependencies, see
+  # For details regarding adding dummyassets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
 
   # To add custom fonts to your application, add a fonts section here,

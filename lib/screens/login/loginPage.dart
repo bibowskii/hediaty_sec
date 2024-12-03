@@ -1,16 +1,32 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hediaty_sec/HomePage/homePage.dart';
-import 'package:hediaty_sec/widgets/textField.dart';
+import 'package:hediaty_sec/providers/theme_provider.dart';
+import 'package:hediaty_sec/screens/signUP/sign_up_screen.dart';
 import 'package:hediaty_sec/widgets/customButton.dart';
+import 'package:hediaty_sec/widgets/textField.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
+import '../../providers/is_logged_in_provider.dart';
 
-class loginPage extends StatelessWidget {
+import '../../providers/theme_provider.dart';
+import 'auth.dart';
+
+class loginPage extends StatefulWidget {
   const loginPage({super.key});
 
   @override
+  State<loginPage> createState() => _loginPageState();
+}
+
+class _loginPageState extends State<loginPage> {
+  @override
   Widget build(BuildContext context) {
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+    String? errorMessage = ' ';
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      //backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -32,12 +48,12 @@ class loginPage extends StatelessWidget {
                   )
                 ],
               ),
-              child: const Padding(
-                padding: EdgeInsets.only(top: 60, left: 16, right: 16),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 60, left: 16, right: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Welcome to Hediaty',
                       style: TextStyle(
                         color: Colors.white,
@@ -45,14 +61,27 @@ class loginPage extends StatelessWidget {
                         fontSize: 40,
                       ),
                     ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Sign in to your account',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        const Text(
+                          'Sign in to your account',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                          ),
+                        ),
+                        Expanded(child: Container()),
+                        IconButton(
+                          icon: Icon(context.watch<theme>().dark
+                              ? Icons.wb_sunny
+                              : Icons.nightlight_round),
+                          onPressed: () {
+                            context.read<theme>().changeTheme();
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -65,14 +94,26 @@ class loginPage extends StatelessWidget {
                 children: [
                   const SizedBox(height: 50),
                   const Text(
-                    'Enter Your Phone Number',
+                    'Enter Your email',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const CustomTextField(
-                    hintText: "01XXXXXXXXX",
+                  CustomTextField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}')
+                          .hasMatch(value)) {
+                        return 'Please enter a valid email';
+                      }
+                      return null;
+                    },
+                    isObsecure: false,
+                    controller: emailController,
+                    hintText: "e.g bibo@example.com",
                     icon: Iconsax.mobile,
                   ),
                   const SizedBox(height: 20),
@@ -83,7 +124,18 @@ class loginPage extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const CustomTextField(
+                  CustomTextField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      if (value.length < 6) {
+                        return 'Password must be at least 6 characters';
+                      }
+                      return null;
+                    },
+                    isObsecure: true,
+                    controller: passwordController,
                     hintText: "Password",
                     icon: Icons.lock_outline,
                   ),
@@ -99,20 +151,31 @@ class loginPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
+                  Text(
+                    errorMessage,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                  const SizedBox(height: 20),
                   Center(
                     child: ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(Colors.lightGreenAccent),
-                        foregroundColor:
-                            MaterialStateProperty.all(Colors.black),
+                            WidgetStateProperty.all(Colors.lightGreenAccent),
+                        foregroundColor: WidgetStateProperty.all(Colors.black),
                       ),
                       //until login validation is implemented
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const Homepage()),
-                        );
+                      onPressed: () async {
+                        try {
+                          await AuthService().signIn(
+                            email: emailController.text,
+                            password: passwordController.text,
+                          );
+                          context.read<isLogged>().changeState();
+                        } on FirebaseAuthException catch (e) {
+                          setState(() {
+                            errorMessage = e.message;
+                          });
+                        }
                       },
                       child: const Text("Login"),
                     ),
@@ -154,7 +217,14 @@ class loginPage extends StatelessWidget {
                             color: Colors.lightGreenAccent,
                           ),
                         ),
-                      )
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignUpScreen()),
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ],
