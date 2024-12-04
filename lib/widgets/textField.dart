@@ -7,7 +7,6 @@ class CustomTextField extends StatelessWidget {
   final dynamic controller;
   final dynamic validator;
 
-
   const CustomTextField({
     super.key,
     required this.hintText,

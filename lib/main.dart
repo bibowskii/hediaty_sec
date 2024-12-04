@@ -6,21 +6,18 @@ import 'package:hediaty_sec/services/shared_prefs_service.dart';
 import 'package:hediaty_sec/wrapper/wrapper.dart';
 import 'package:provider/provider.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefs().init();
   await Firebase.initializeApp();
-  runApp(
-      MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (context)=>isLogged()),
-            ChangeNotifierProvider(create: (context)=>theme()),
-          ],
-          child: const MyApp()));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => isLogged()),
+    ChangeNotifierProvider(create: (context) => theme()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
-  final bool darkMode =false;
+  final bool darkMode = false;
 
   const MyApp({super.key});
 
@@ -28,15 +25,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme:context.watch<theme>().dark?ThemeData.dark(): ThemeData.light(),
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+        theme:
+            context.watch<theme>().dark ? ThemeData.dark() : ThemeData.light(),
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
 /*      theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),*/
-      home: const AuthWrapper(),
-    );
+        home: AuthWrapper() //const AuthWrapper(),
+        );
   }
 }
-

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/signUP/sign_up_screen.dart';
@@ -6,13 +7,12 @@ import 'package:hediaty_sec/widgets/customButton.dart';
 import 'package:hediaty_sec/widgets/textField.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
-import '../../providers/is_logged_in_provider.dart';
 
-import '../../providers/theme_provider.dart';
-import 'auth.dart';
+import '../../providers/is_logged_in_provider.dart';
+import '../../services/auth_service.dart';
 
 class loginPage extends StatefulWidget {
-  const loginPage({super.key});
+  loginPage({super.key});
 
   @override
   State<loginPage> createState() => _loginPageState();
@@ -21,11 +21,15 @@ class loginPage extends StatefulWidget {
 class _loginPageState extends State<loginPage> {
   @override
   Widget build(BuildContext context) {
+    String? errorMessage = ' ';
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
-    String? errorMessage = ' ';
 
     return Scaffold(
+      backgroundColor: context.watch<theme>().dark
+          ? CupertinoColors.darkBackgroundGray
+          : CupertinoColors.extraLightBackgroundGray,
+
       //backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
@@ -151,10 +155,14 @@ class _loginPageState extends State<loginPage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Text(
-                    errorMessage,
-                    style: const TextStyle(color: Colors.red),
-                  ),
+                  if (errorMessage != null && errorMessage!.isNotEmpty)
+                    Text(
+                      errorMessage!,
+                      style: const TextStyle(
+                        color: Colors.red,
+                        fontSize: 14,
+                      ),
+                    ),
                   const SizedBox(height: 20),
                   Center(
                     child: ElevatedButton(
@@ -166,14 +174,24 @@ class _loginPageState extends State<loginPage> {
                       //until login validation is implemented
                       onPressed: () async {
                         try {
-                          await AuthService().signIn(
+                          await authService().signIn(
                             email: emailController.text,
                             password: passwordController.text,
                           );
                           context.read<isLogged>().changeState();
                         } on FirebaseAuthException catch (e) {
                           setState(() {
-                            errorMessage = e.message;
+                            switch (e.code) {
+                              case 'user-not-found':
+                                errorMessage =
+                                    'No user found for that email, try creating an account.';
+                                break;
+                              case 'wrong-password':
+                                errorMessage = 'Wrong email or password.';
+                                break;
+                              default:
+                                errorMessage = 'Error signing in: ${e.message}';
+                            }
                           });
                         }
                       },

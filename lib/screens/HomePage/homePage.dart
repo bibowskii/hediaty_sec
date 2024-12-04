@@ -1,11 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hediaty_sec/widgets/customNavBar.dart';
-import 'package:hediaty_sec/widgets/customSearchBar.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
+import 'package:hediaty_sec/widgets/customSearchBar.dart';
 import 'package:provider/provider.dart';
-
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -13,10 +10,20 @@ class Homepage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CupertinoColors.extraLightBackgroundGray,
-      appBar: AppBar(
+      backgroundColor: context.watch<theme>().dark
+          ? CupertinoColors.darkBackgroundGray
+          : CupertinoColors.extraLightBackgroundGray,
+
+      /*appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: const Icon(Icons.logout),
+          onPressed: () {
+            authService().signOut();
+            context.read<isLogged>().changeState();
+          },
+        ),
         title: const Text(
           'Hediaty',
           style: TextStyle(
@@ -37,7 +44,8 @@ class Homepage extends StatelessWidget {
             child: Icon(Iconsax.profile_add),
           ),
         ],
-      ),
+      ),*/
+
       body: const Column(
         children: [
           Padding(
@@ -45,27 +53,39 @@ class Homepage extends StatelessWidget {
             child: Column(
               children: [
                 customSearchBar(),
-                SizedBox(height: 40,),
+                SizedBox(
+                  height: 40,
+                ),
                 Text('Upcoming Events this Month'),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 SingleChildScrollView(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [],
                   ),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 Text('Upcoming Events this Year'),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 SingleChildScrollView(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [],
                   ),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 Text('No Events'),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 SingleChildScrollView(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -86,6 +106,7 @@ class Homepage extends StatelessWidget {
               Icon(
                 Icons.add,
                 size: 15,
+                color: Colors.black,
               ),
               Icon(
                 Icons.event_outlined,
@@ -94,7 +115,7 @@ class Homepage extends StatelessWidget {
               ),
             ],
           )),
-      bottomNavigationBar: const cusNavBar(),
+      //bottomNavigationBar: cusNavBar(),
     );
   }
 }
