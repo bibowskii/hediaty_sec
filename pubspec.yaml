@@ -71,6 +71,7 @@ flutter:
   # To add dummyassets to your application, add an dummyassets section, like this:
   assets:
     - lib/assets/icons/
+    - lib/assets/splashScreen/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
