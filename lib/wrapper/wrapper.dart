@@ -13,8 +13,8 @@ class AuthWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SignUpScreen(),
-      // body: context.watch<isLogged>().isLoggedIn ? CustomNavBar() :  loginPage(),
+      //body: SignUpScreen(),
+       body: context.watch<isLogged>().isLoggedIn ? CustomNavBar() :  loginPage(),
     );
   }
 }

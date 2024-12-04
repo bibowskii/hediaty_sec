@@ -1,9 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hediaty_sec/models/domain/users_methods.dart';
+import 'package:hediaty_sec/providers/is_logged_in_provider.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
+import 'package:hediaty_sec/services/auth_service.dart';
 import 'package:hediaty_sec/widgets/textField.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
+
+import '../../models/data/users.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -161,7 +166,22 @@ class _signUpScreenState extends State<SignUpScreen> {
                     ),
                     ElevatedButton(
                         onPressed: () {
-                          setState(() {
+                          setState(() async{
+                            try{
+                              await authService().signUp(email: emailController.text, password: passwordController.text);
+                              await authService().signIn(email: emailController.text, password: passwordController.text);
+                              String currentID =authService().currentUser!.uid;
+                              User myUser = new User(currentID, nameController.text, emailController.text, numberController.text, 'lib/assets/icons/favicon.png' );
+                              await userMethods().createUser(myUser);
+                                print('changing state');
+                                context.read<isLogged>().changeState();
+                                print('state change');
+                            }
+
+                            catch(e){
+                              print(e.toString());
+
+                            }
         
                           });
                         },

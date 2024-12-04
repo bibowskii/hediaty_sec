@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             Spacer(),
             Image.asset(
-                'lib/assets/splashScreen/final1.gif',
+                'lib/assets/icons/logo.png',
                 fit: BoxFit.cover,
               ),
 
