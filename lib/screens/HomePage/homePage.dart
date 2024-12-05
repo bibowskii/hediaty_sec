@@ -1,95 +1,100 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
+import 'package:hediaty_sec/screens/HomePage/widgets/friendCard.dart';
+import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:hediaty_sec/widgets/customSearchBar.dart';
 import 'package:provider/provider.dart';
+import 'homePage_controller.dart';
+import 'package:hediaty_sec/models/data/users.dart';
 
-class Homepage extends StatelessWidget {
-  const Homepage({super.key});
+class Homepage extends StatefulWidget {
+  Homepage({super.key});
 
   @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  @override
+  void initState() {
+    super.initState();
+
+    // You can call these functions here
+    filterThisMonth(UserManager().getUser()!); // Make sure `myUser` is defined
+    filterFriends();
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.watch<theme>().dark
           ? CupertinoColors.darkBackgroundGray
           : CupertinoColors.extraLightBackgroundGray,
 
-      /*appBar: AppBar(
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: const Icon(Icons.logout),
-          onPressed: () {
-            authService().signOut();
-            context.read<isLogged>().changeState();
-          },
-        ),
-        title: const Text(
-          'Hediaty',
-          style: TextStyle(
-            fontSize: 35,
-          ),
-        ),
-        centerTitle: true,
-        shadowColor: Colors.black54,
-        actions: [
-          IconButton(
-            icon: Icon(context.watch<theme>().dark ? Icons.wb_sunny : Icons.nightlight_round),
-            onPressed: () {
-              context.read<theme>().changeTheme();
-            },
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(Iconsax.profile_add),
-          ),
-        ],
-      ),*/
-
-      body: const Column(
+      body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
-                customSearchBar(),
-                SizedBox(
+                const customSearchBar(),
+                const SizedBox(
                   height: 40,
                 ),
-                Text('Upcoming Events this Month'),
-                SizedBox(
+                const Text('Upcoming Events this Month'),
+                const SizedBox(
                   height: 10,
                 ),
                 SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [],
+                    children: friendsThisMonth
+                        .map((User user) => Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: friendCard(myUser: user),
+                            ))
+                        .toList(),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                Text('Upcoming Events this Year'),
-                SizedBox(
+                const Text('Upcoming Events this Year'),
+                const SizedBox(
                   height: 10,
                 ),
                 SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [],
+                    children: friendsThisYear
+                        .map((User user) => Padding(
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: friendCard(myUser: user),
+                    ))
+                        .toList(),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                Text('No Events'),
-                SizedBox(
+                const Text('No Events'),
+                const SizedBox(
                   height: 10,
                 ),
                 SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [],
+                    children: friendsLater
+                        .map((User user) => Padding(
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: friendCard(myUser: user),
+                    ))
+                        .toList(),
                   ),
                 ),
               ],

@@ -56,5 +56,23 @@ class userMethods implements users_repo {
 
     }
     }
+  Future<Map<String, dynamic>?> getUserByID(String ID) async {
 
+    try {
+      String? docID =
+      await _firestoreService.getDocID(collections().user, 'id', ID);
+      if(docID != null) {
+        Map<String,dynamic>? user = await _firestoreService.getDocument(collections().user, docID!);
+        if(user != null) {
+          print('user found');
+
+        }
+        return user;
+      }
+    }catch(e){
+      print(e.toString());
+      print('error getting the user');
+
+    }
+  }
 }

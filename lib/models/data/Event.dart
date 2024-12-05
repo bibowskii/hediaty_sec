@@ -19,14 +19,13 @@ class Event {
       'date':date,
     };
   }
-  fromMap(Map<String,dynamic> map){
-    return(
-    id:'id' ?? '',
-    userID:"userId" ?? '',
-    name:"name" ?? '',
-    location:'location' ?? '',
-    description:'description' ?? '',
-    date:'date' ?? '',
-    );
-  }
+  Event.fromMap(Map<String,dynamic> map):
+    id=map['id'] ?? '',
+    userID=map["userId"] ?? '',
+    name=map["name"] ?? '',
+    location=map['location'] ?? '',
+    description=map['description'] ?? '',
+    date=map['date'] ;
+
+
 }

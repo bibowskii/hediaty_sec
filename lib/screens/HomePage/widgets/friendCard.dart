@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hediaty_sec/models/data/users.dart';
 import 'package:iconsax/iconsax.dart';
 
 class friendCard extends StatelessWidget {
-  final String uName;
-  const friendCard({super.key, required this.uName});
+  final User myUser;
+  const friendCard({super.key, required this.myUser});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class friendCard extends StatelessWidget {
           const CircleAvatar(
             child: Icon(Iconsax.user),
           ),
-          Text(uName),
+          Text(myUser.name!),
         ],
       ),
     );

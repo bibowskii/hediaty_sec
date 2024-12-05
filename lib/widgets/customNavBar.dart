@@ -12,6 +12,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
 import '../services/auth_service.dart';
+import '../services/user_manager.dart';
 
 class CustomNavBar extends StatefulWidget {
   @override
@@ -42,6 +43,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
         leading: IconButton(
           icon: const Icon(Icons.logout),
           onPressed: () {
+            UserManager().clearUser();
             authService().signOut();
             context.read<isLogged>().changeState();
           },

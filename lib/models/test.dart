@@ -59,11 +59,9 @@ void main() async {
   /////////////////////////
   Friend friend1 = Friend('1', '2');
   Friend friend2 = Friend('1', '3');
-  giftMethods().deleteGift(gift9);
-  eventMethods().deleteEvent(event3);
-  userMethods().deleteUser(user3);
   Follow().followFriend(friend1);
   Follow().followFriend(friend2);
+
 
   /////////////////////////////// fetching
   print('//////////////////////////////////////////////////////// fetching////////////////////////////////////////////////');

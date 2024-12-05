@@ -4,11 +4,13 @@ import 'package:hediaty_sec/providers/is_logged_in_provider.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/splash_screen/splash_screen.dart';
 import 'package:hediaty_sec/services/shared_prefs_service.dart';
+import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:hediaty_sec/wrapper/wrapper.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await UserManager().loadUser();
   await SharedPrefs().init();
   await Firebase.initializeApp();
   runApp(MultiProvider(providers: [

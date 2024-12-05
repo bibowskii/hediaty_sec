@@ -1,5 +1,5 @@
 class User {
-  String id; //pk
+  String id; // pk
   String? name;
   String? email;
   String? number;
@@ -17,13 +17,11 @@ class User {
     };
   }
 
-  fromMap(Map<String, dynamic> map) {
-    return (
-      id: map['id'] ?? '',
-      number: map['number'] ?? '',
-      email: map['email'] ?? '',
-      name: map['name'] ?? '',
-      imageURL: map['imageURl'] ?? '',
-    );
-  }
+  User.fromMap(Map<String, dynamic> map)
+      : id = map['id'] ?? '',
+        name = map['name'] ?? '',
+        email = map['email'] ?? '',
+        number = map['number'] ?? '',
+        imageURL = map['imageURL'] ?? '';
 }
+
