@@ -1,8 +1,8 @@
 class PledgedBy {
-  String? userID;
-  String? giftID;
+  String userID;
+  String giftID;
 
-  PledgedBy({this.userID, this.giftID});
+  PledgedBy({required this.userID, required this.giftID});
 
   Map<String, dynamic> toMap() {
     return {

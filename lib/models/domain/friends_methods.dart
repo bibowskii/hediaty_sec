@@ -3,9 +3,9 @@
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hediaty_sec/models/data/collections.dart';
 import 'package:hediaty_sec/models/data/friends.dart';
+import 'package:hediaty_sec/models/data/users.dart';
 import 'package:hediaty_sec/models/repository/friends_repo.dart';
 import 'package:hediaty_sec/services/firebase_services.dart';
-import 'package:hediaty_sec/models/data/users.dart';
 
 final FirestoreService _firestoreService = FirestoreService();
 

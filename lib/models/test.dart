@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
 import 'package:hediaty_sec/models/data/Event.dart';
 import 'package:hediaty_sec/models/data/Gifts.dart';
 import 'package:hediaty_sec/models/data/friends.dart';
@@ -9,9 +8,6 @@ import 'package:hediaty_sec/models/domain/event_methods.dart';
 import 'package:hediaty_sec/models/domain/friends_methods.dart';
 import 'package:hediaty_sec/models/domain/gift_methods.dart';
 import 'package:hediaty_sec/models/domain/users_methods.dart';
-import 'package:hediaty_sec/services/firebase_services.dart';
-import 'package:hediaty_sec/models/data/collections.dart';
-import 'dart:ui';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

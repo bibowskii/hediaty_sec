@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hediaty_sec/screens/HomePage/homePage.dart';
 import 'package:hediaty_sec/screens/login/loginPage.dart';
-import 'package:hediaty_sec/screens/signUP/sign_up_screen.dart';
 import 'package:hediaty_sec/widgets/customNavBar.dart';
 import 'package:provider/provider.dart';
+
 import '../providers/is_logged_in_provider.dart';
 
 
