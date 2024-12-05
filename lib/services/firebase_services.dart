@@ -1,34 +1,40 @@
+//supposedly done
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  // get document ID
-  Future<String?> getDocID(
-      String collection, String attribute, String value) async {
-    QuerySnapshot querySnapshot = await _db
-        .collection(collection)
-        .where(attribute, isEqualTo: value)
-        .get();
-    if (querySnapshot.docs.isNotEmpty) {
-      DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
-      return documentSnapshot.id;
+  // Get document ID based on attribute
+  Future<String?> getDocID(String collection, String attribute, String value) async {
+    try {
+      QuerySnapshot querySnapshot = await _db
+          .collection(collection)
+          .where(attribute, isEqualTo: value)
+          .get();
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
+        return documentSnapshot.id;
+      }
+      return null;
+    } catch (e) {
+      print("Error getting document ID: $e");
+      return null;
     }
-    return null;
   }
 
   // Add data and return the document ID
   Future<String?> addData(String collection, Map<String, dynamic> data) async {
     try {
       DocumentReference docRef = await _db.collection(collection).add(data);
-      return docRef.id; // Return the document ID
+      return docRef.id;
     } catch (e) {
       print("Error adding data: $e");
-      return null; // Return null in case of failure
+      return null;
     }
   }
 
-  // Get data from the collection and return a list of maps
+  // Get all data from the collection and return a list of maps
   Future<List<Map<String, dynamic>>> getData(String collection) async {
     try {
       QuerySnapshot snapshot = await _db.collection(collection).get();
@@ -37,26 +43,63 @@ class FirestoreService {
           .toList();
     } catch (e) {
       print("Error getting data: $e");
-      return []; // Return an empty list in case of failure
+      return [];
     }
   }
 
-  // Get a single document by its ID
-  Future<Map<String, dynamic>?> getDocument(
-      String collection, String documentId) async {
+  // Query to get a list of documents based on a specific attribute and value
+  Future<List<Map<String, dynamic>>> getList(String collection, String attribute, String value) async {
+    List<Map<String, dynamic>> documents = [];
+
     try {
-      DocumentSnapshot doc =
-          await _db.collection(collection).doc(documentId).get();
+      QuerySnapshot querySnapshot = await _db
+          .collection(collection)
+          .where(attribute, isEqualTo: value)
+          .get();
+
+      for (var doc in querySnapshot.docs) {
+        documents.add(doc.data() as Map<String, dynamic>);
+      }
+      return documents;
+    } catch (e) {
+      print("Error getting list of documents: $e");
+      return [];
+    }
+  }
+
+  // Query to get a document based on a specific attribute and value (e.g., userId)
+  Future<Map<String, dynamic>?> getDocumentByAttribute(String collection, String attribute, String value) async {
+    try {
+      QuerySnapshot querySnapshot = await _db
+          .collection(collection)
+          .where(attribute, isEqualTo: value)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentSnapshot doc = querySnapshot.docs.first;
+        return doc.data() as Map<String, dynamic>;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print("Error getting document by attribute: $e");
+      return null;
+    }
+  }
+
+  // Get document by docID
+  Future<Map<String, dynamic>?> getDocument(String collection, String documentId) async {
+    try {
+      DocumentSnapshot doc = await _db.collection(collection).doc(documentId).get();
       return doc.exists ? doc.data() as Map<String, dynamic> : null;
     } catch (e) {
       print("Error getting document: $e");
-      return null; // Return null if document doesn't exist or error occurs
+      return null;
     }
   }
 
   // Update data in a document by its ID
-  Future<void> updateData(
-      String collection, String documentId, Map<String, dynamic> data) async {
+  Future<void> updateData(String collection, String documentId, Map<String, dynamic> data) async {
     try {
       await _db.collection(collection).doc(documentId).update(data);
     } catch (e) {
@@ -71,35 +114,5 @@ class FirestoreService {
     } catch (e) {
       print("Error deleting data: $e");
     }
-  }
-
-  Future<void> deleteDataByAtt(String collection, String documentId) async {
-    try {
-      await _db.collection(collection).doc(documentId).delete();
-    } catch (e) {
-      print("Error deleting data: $e");
-    }
-  }
-
-
-  Future<List<Map<String, dynamic>>> getList(String collection,
-      String attribute, String value) async {
-    List<Map<String, dynamic>> documents = []; // Initialize an empty list
-
-    try {
-      QuerySnapshot querySnapshot = await _db
-          .collection(collection)
-          .where(attribute, isEqualTo: value)
-          .get();
-
-      for (var doc in querySnapshot.docs) {
-        documents.add(doc.data() as Map<String, dynamic>); // Add to the list
-      }
-      return documents;
-    } catch (e) {
-      print(e.toString());
-    }
-
-    return documents; // Return the populated list
   }
 }

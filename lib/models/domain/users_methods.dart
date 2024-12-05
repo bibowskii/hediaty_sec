@@ -1,3 +1,5 @@
+//supposedly done
+
 import 'package:hediaty_sec/models/data/collections.dart';
 import 'package:hediaty_sec/models/data/users.dart';
 import 'package:hediaty_sec/models/repository/users_repository.dart';
@@ -5,6 +7,9 @@ import 'package:hediaty_sec/services/firebase_services.dart';
 
 class userMethods implements users_repo {
   final FirestoreService _firestoreService = FirestoreService();
+
+
+
 
   @override
   Future<void> createUser(User myUser) async {
@@ -32,9 +37,24 @@ class userMethods implements users_repo {
   }
 
   @override
-  Future<void> getUser(User myUser) async {
-    String? docID =
-        await _firestoreService.getDocID(collections().user, 'id', myUser.id);
-    await _firestoreService.getDocument(collections().user, docID!);
-  }
+  Future<Map<String, dynamic>?> getUser(User myUser) async {
+
+    try {
+      String? docID =
+      await _firestoreService.getDocID(collections().user, 'id', myUser.id);
+      if(docID != null) {
+        Map<String,dynamic>? user = await _firestoreService.getDocument(collections().user, docID!);
+        if(user != null) {
+          print('user found');
+
+        }
+        return user;
+      }
+    }catch(e){
+      print(e.toString());
+      print('error getting the user');
+
+    }
+    }
+
 }
