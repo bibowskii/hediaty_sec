@@ -31,10 +31,7 @@ class customSearchBar extends StatelessWidget {
               const SizedBox(width: 8),
             ],
           ),
-          suffixIcon: const Icon(
-            Icons.mic,
-            color: Colors.black54,
-          ),
+
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20.0),
             borderSide: BorderSide.none,

@@ -173,14 +173,14 @@ class _signUpScreenState extends State<SignUpScreen> {
                               String currentID =authService().currentUser!.uid;
                               User myUser = new User(currentID, nameController.text, emailController.text, numberController.text, 'lib/assets/icons/favicon.png' );
                               await userMethods().createUser(myUser);
-                                print('changing state');
+                                debugPrint('changing state');
                                 context.read<isLogged>().changeState();
-                                print('state change');
+                                Navigator.pushReplacementNamed(context, '/home');
+                                debugPrint('state change');
                             }
 
                             catch(e){
                               print(e.toString());
-
                             }
         
                           });

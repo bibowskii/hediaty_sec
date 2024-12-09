@@ -31,10 +31,12 @@ class _SplashScreenState extends State<SplashScreen> {
               'Welcome to Hediaty',
               style: TextStyle(fontSize: 40, color: Colors.black),
             ),
-            Spacer(),
+            //Spacer(),
             Image.asset(
                 'lib/assets/icons/logo.png',
                 fit: BoxFit.cover,
+              height: 200,
+              width: 200,
               ),
 
 

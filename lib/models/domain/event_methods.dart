@@ -17,6 +17,7 @@ class eventMethods implements eventRepo {
       print('Event Created Successfully!');
     } catch (e) {
       print(e.toString());
+      return null;
     }
   }
 
@@ -67,7 +68,7 @@ class eventMethods implements eventRepo {
   Future<List<Map<String, dynamic>>> getListEvents(User myUser)async {
     List<Map<String, dynamic>> events = [];
     try{
-      await _firestoreService.getList(collections().event, 'userID', myUser.id);
+     events = await _firestoreService.getList(collections().event, 'userID', myUser.id);
       print('events found');
       return events;
     }catch(e){

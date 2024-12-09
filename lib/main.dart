@@ -10,9 +10,10 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await UserManager().loadUser();
   await SharedPrefs().init();
   await Firebase.initializeApp();
+  await UserManager().loadUser();
+
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => isLogged()),
     ChangeNotifierProvider(create: (context) => theme()),

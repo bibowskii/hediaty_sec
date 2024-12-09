@@ -1,7 +1,5 @@
-import 'package:hediaty_sec/models/domain/users_methods.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
-import 'package:hediaty_sec/models/data/users.dart';
 
 class UserManager {
   static final UserManager _instance = UserManager._internal();
@@ -9,43 +7,59 @@ class UserManager {
     return _instance;
   }
 
-  User? currentUser;
-  final userMethods _userMethods = userMethods();  // Instance of UserMethods
+  String? currentUserId;
 
   UserManager._internal();
 
-  // Load user from SharedPreferences when the app starts
+  // Load user ID from Firebase Authentication or SharedPreferences
   Future<void> loadUser() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? userJson = prefs.getString('currentUser');
-    if (userJson != null) {
-      currentUser = User.fromMap(json.decode(userJson));
+    final firebase_auth.User? user = firebase_auth.FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      currentUserId = user.uid;
+      // Optionally save user ID to SharedPreferences for persistence
+      _saveUserIdToPrefs(currentUserId);
+    } else {
+      // Load user ID from SharedPreferences if not logged in
+      _loadUserIdFromPrefs();
     }
   }
 
-  // Set the user by id and fetch the rest of the data
-  Future<void> setUser(String userId) async {
-    // Fetch user data using UserMethods
-    Map<String, dynamic>? userData = await _userMethods.getUserByID(userId);
-    if (userData != null) {
-      // Create User object with the fetched data
-      currentUser = User.fromMap(userData);
-
-      // Save the user in SharedPreferences for persistence
+  // Save user ID to SharedPreferences for persistence
+  Future<void> _saveUserIdToPrefs(String? userId) async {
+    if (userId != null) {
       final prefs = await SharedPreferences.getInstance();
-      prefs.setString('currentUser', json.encode(currentUser?.toMap()));
+      prefs.setString('currentUserId', userId);
     }
   }
 
-  // Get current user
-  User? getUser() {
-    return currentUser;
+  // Load user ID from SharedPreferences
+  Future<void> _loadUserIdFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    currentUserId = prefs.getString('currentUserId');
   }
 
-  // Clear current user
+  // Set the user ID
+  Future<void> setUserId(String userId) async {
+    currentUserId = userId;
+    _saveUserIdToPrefs(currentUserId);
+  }
+
+  // Get the current user ID
+  String? getUserId() {
+    return currentUserId;
+  }
+
+  // Clear the user ID
   Future<void> clearUser() async {
-    currentUser = null;
+    currentUserId = null;
     final prefs = await SharedPreferences.getInstance();
-    prefs.remove('currentUser');
+    prefs.remove('currentUserId');
+    await firebase_auth.FirebaseAuth.instance.signOut();
+  }
+
+  // Check if the user is logged in
+  Future<bool> isUserLoggedIn() async {
+    var user = firebase_auth.FirebaseAuth.instance.currentUser;
+    return user != null;
   }
 }

@@ -7,6 +7,7 @@ import 'package:hediaty_sec/widgets/customButton.dart';
 import 'package:hediaty_sec/widgets/textField.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
+
 import '../../providers/is_logged_in_provider.dart';
 import '../../services/auth_service.dart';
 import '../../services/user_manager.dart';
@@ -178,7 +179,7 @@ class _loginPageState extends State<loginPage> {
                             email: emailController.text,
                             password: passwordController.text,
                           );
-                          UserManager().setUser(FirebaseAuth.instance.currentUser!.uid);
+                          UserManager().setUserId(FirebaseAuth.instance.currentUser!.uid);
                           context.read<isLogged>().changeState();
                         } on FirebaseAuthException catch (e) {
                           setState(() {

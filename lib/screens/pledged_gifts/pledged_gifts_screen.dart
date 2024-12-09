@@ -12,6 +12,7 @@ class PledgedGiftsScreen extends StatelessWidget {
       backgroundColor: context.watch<theme>().dark
           ? CupertinoColors.darkBackgroundGray
           : CupertinoColors.extraLightBackgroundGray,
+
     );
   }
 }

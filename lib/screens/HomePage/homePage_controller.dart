@@ -4,17 +4,18 @@ import 'package:hediaty_sec/models/domain/event_methods.dart';
 import 'package:hediaty_sec/models/domain/friends_methods.dart';
 import 'package:hediaty_sec/models/domain/users_methods.dart';
 
-List<Map<String, dynamic>> monthEvents = [];
-List<Map<String, dynamic>> yearEvents = [];
-List<Map<String, dynamic>> nextYearEvents = [];
+class HomePageController {
+  List<Map<String, dynamic>> monthEvents = [];
+  List<Map<String, dynamic>> yearEvents = [];
+  List<Map<String, dynamic>> nextYearEvents = [];
 
-List<Map<String, dynamic>> monthEventsFriends = [];
-List<Map<String, dynamic>> yearEventsFriends = [];
-List<Map<String, dynamic>> nextYearEventsFriends = [];
+  List<Map<String, dynamic>> monthEventsFriends = [];
+  List<Map<String, dynamic>> yearEventsFriends = [];
+  List<Map<String, dynamic>> nextYearEventsFriends = [];
 
-List<User> friendsThisMonth =[];
-List<User> friendsThisYear =[];
-List<User> friendsLater =[];
+  List<User> friendsThisMonth = [];
+  List<User> friendsThisYear = [];
+  List<User> friendsLater = [];
 
   Future<void> filterThisMonth(User myUser) async {
     Follow followMethods = Follow();
@@ -22,12 +23,9 @@ List<User> friendsLater =[];
 
     List<Map<String, dynamic>> unfilteredFriends =
     await followMethods.getListFriends(myUser);
-
     DateTime now = DateTime.now();
     int currentMonth = now.month;
     int currentYear = now.year;
-
-
 
     await Future.wait(unfilteredFriends.map((friend) async {
       User userFriend = User.fromMap(friend);
@@ -48,33 +46,31 @@ List<User> friendsLater =[];
     }));
   }
 
-  Future<void> filterFriends()async{
+  Future<void> filterFriends() async {
     userMethods userF = userMethods();
 
-    for (var event in monthEvents){
+    for (var event in monthEvents) {
       Event curEvent = Event.fromMap(event);
       var user = await userF.getUserByID(curEvent.userID);
 
       monthEventsFriends.add(user!);
-      friendsThisMonth = monthEventsFriends.map((map)=>User.fromMap(map)).toSet().toList();
+      friendsThisMonth = monthEventsFriends.map((map) => User.fromMap(map)).toSet().toList();
     }
 
-    for (var event in yearEvents){
+    for (var event in yearEvents) {
       Event curEvent = Event.fromMap(event);
       var user = await userF.getUserByID(curEvent.userID);
 
       yearEventsFriends.add(user!);
-      friendsThisYear = yearEventsFriends.map((map)=>User.fromMap(map)).toSet().toList();
+      friendsThisYear = yearEventsFriends.map((map) => User.fromMap(map)).toSet().toList();
     }
-    for (var event in nextYearEvents){
+
+    for (var event in nextYearEvents) {
       Event curEvent = Event.fromMap(event);
       var user = await userF.getUserByID(curEvent.userID);
 
       nextYearEventsFriends.add(user!);
-      friendsLater = nextYearEventsFriends.map((map)=>User.fromMap(map)).toSet().toList();
-
+      friendsLater = nextYearEventsFriends.map((map) => User.fromMap(map)).toSet().toList();
     }
-
   }
-
-
+}

@@ -5,7 +5,7 @@ class User {
   String? number;
   String? imageURL;
 
-  User(this.id, this.name, this.email, this.number, this.imageURL);
+  User(this.id, this.name, this.email, this.number, this.imageURL,);
 
   Map<String, dynamic> toMap() {
     return {
