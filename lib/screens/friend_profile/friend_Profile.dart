@@ -36,13 +36,14 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(widget.friend.name!),
       ),
       body: Stack(
         children: [
           Container(
             decoration: BoxDecoration(
-            color: Colors.blue,
+            color: Colors.white,
               borderRadius: BorderRadius.circular(40.0),
             ),
             child: Column(

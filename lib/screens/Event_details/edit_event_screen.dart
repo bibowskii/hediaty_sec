@@ -7,15 +7,15 @@ import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:hediaty_sec/widgets/textField.dart';
 import 'package:provider/provider.dart';
 
-class addEventScreen extends StatefulWidget {
+class EditEventScreen extends StatefulWidget {
   Event myEvent;
-   addEventScreen({super.key, required this.myEvent});
+   EditEventScreen({super.key, required this.myEvent});
 
   @override
-  State<addEventScreen> createState() => _addEventScreenState();
+  State<EditEventScreen> createState() => _EditEventScreenState();
 }
 
-class _addEventScreenState extends State<addEventScreen> {
+class _EditEventScreenState extends State<EditEventScreen> {
   late DateTime _selectedDate;
   TextEditingController eventNameController = TextEditingController();
   TextEditingController eventDescriptionController = TextEditingController();
