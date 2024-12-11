@@ -21,6 +21,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   HomePageController _controller = HomePageController();
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -75,7 +76,17 @@ class _HomepageState extends State<Homepage> {
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
-                  const customSearchBar(),
+                  customSearchBar(
+                    searchController: searchController,
+                    onEmptyQuery: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content:
+                              Text('No matches for that number were found'),
+                        ),
+                      );
+                    },
+                  ),
                   const SizedBox(
                     height: 40,
                   ),
@@ -168,7 +179,7 @@ class _HomepageState extends State<Homepage> {
             MaterialPageRoute(builder: (context) => addEventScreen()),
           );
         },
-        backgroundColor: Colors.lightGreenAccent,
+        backgroundColor: Colors.blueAccent,
         tooltip: 'Add Event',
         child: Row(
           children: [

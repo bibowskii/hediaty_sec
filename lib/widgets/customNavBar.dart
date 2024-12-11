@@ -66,10 +66,6 @@ class _CustomNavBarState extends State<CustomNavBar> {
               context.read<theme>().changeTheme();
             },
           ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(Iconsax.profile_add),
-          ),
           const SizedBox(width: 6,)
         ],
       ),
@@ -104,12 +100,12 @@ class _CustomNavBarState extends State<CustomNavBar> {
             color: Colors.black,
           ),
         ],
-        color: Colors.lightGreenAccent,
+        color: Colors.blueAccent,
         buttonBackgroundColor: Colors.white,
         backgroundColor: context.watch<theme>().dark
             ? CupertinoColors.darkBackgroundGray
             : CupertinoColors.extraLightBackgroundGray,
-        animationCurve: Curves.easeInOut,
+        animationCurve: Curves.fastEaseInToSlowEaseOut,
         animationDuration: Duration(milliseconds: 500),
         onTap: (index) {
           setState(() {

@@ -76,4 +76,14 @@ class HomePageController {
       friendsLater = nextYearEventsFriends.map((map) => User.fromMap(map)).toSet().toList();
     }
   }
+
+  Future <User?> getFriendsList(String number) async {
+    try {
+      User? myUser = await userMethods().FindUserByNumber(number);
+      return myUser;
+    }catch(e){
+      print(e.toString());
+    }
+    }
+
 }
