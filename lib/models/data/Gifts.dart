@@ -8,9 +8,10 @@ class Gift {
   String eventID; //fk
   String userID; //fk
   String imgURl;
+  String? pledgedBy;
 
   Gift(this.id, this.name, this.description, this.category, this.status,
-      this.price, this.eventID, this.userID, this.imgURl);
+      this.price, this.eventID, this.userID, this.imgURl, this.pledgedBy);
 
 
   Map<String, dynamic> toMap() {
@@ -24,6 +25,7 @@ class Gift {
       'eventID': eventID,
       'userID': userID,
       'imgURl': imgURl,
+      'pledgedBy': pledgedBy,
     };
   }
 
@@ -39,6 +41,7 @@ class Gift {
       map['eventID'] ?? '',
       map['userID'] ?? '',
       map['imgURl'] ?? '',
+      map['pledgedBy']??'',
     );
   }
 }

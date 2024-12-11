@@ -5,6 +5,7 @@ import 'package:hediaty_sec/models/data/Gifts.dart';
 import 'package:hediaty_sec/models/data/collections.dart';
 import 'package:hediaty_sec/models/repository/gifts_repo.dart';
 import 'package:hediaty_sec/services/firebase_services.dart';
+import 'package:hediaty_sec/services/user_manager.dart';
 
 import '../data/users.dart';
 
@@ -88,6 +89,30 @@ class giftMethods implements gifts_repo {
     } catch (e) {
       print(e.toString());
       return gifts;
+    }
+  }
+
+Future<void> pledge(Gift myGift)async{
+    try{
+      String? docID = await _firestoreService.getDocID(
+          collections().gifts, 'id', myGift.id);
+      await _firestoreService.updateSingelAtt(collections().gifts, docID!, 'pledgedBy', UserManager().getUserId()!);
+    }catch(e){
+      print(e.toString());
+    }
+}
+
+  @override
+  Future<List<Map<String, dynamic>>> getListPledges(User myUser) async {
+    List<Map<String, dynamic>> pledges = [];
+    try {
+      pledges = await _firestoreService.getList(
+          collections().giftPledge, 'pledgedBy', myUser.id);
+      print('pledged found');
+      return pledges;
+    } catch (e) {
+      print(e.toString());
+      return pledges;
     }
   }
 

@@ -1,3 +1,6 @@
+// remove comment later when done with the ui
+// comment for the filtering logic to make sure the event data is later and not and old event, to be specific in this month filtering
+
 import 'package:hediaty_sec/models/data/event.dart';
 import 'package:hediaty_sec/models/data/users.dart';
 import 'package:hediaty_sec/models/domain/event_methods.dart';
@@ -33,9 +36,9 @@ class HomePageController {
 
       for (var event in events) {
         Event curEvent = Event.fromMap(event);
-
+//remove comment later when done with the ui
         if (curEvent.date.month == currentMonth &&
-            curEvent.date.year == currentYear) {
+            curEvent.date.year == currentYear /*&& curEvent.date.isAfter(DateTime.now())*/) {
           monthEvents.add(event);
         } else if (curEvent.date.year == currentYear) {
           yearEvents.add(event);

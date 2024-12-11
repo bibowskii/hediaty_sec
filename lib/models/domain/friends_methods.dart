@@ -8,12 +8,15 @@ final FirestoreService _firestoreService = FirestoreService();
 
 class Follow implements friendsRepo {
   @override
-  Future<void> followFriend(Friend myFriend) async {
+  Future<bool> followFriend(Friend myFriend) async {
     try {
       await _firestoreService.addData(collections().friends, myFriend.toMap());
+      return true;
     } catch (e) {
       print('Error following friend: ${e.toString()}');
-    }
+
+      return false;}
+
   }
 
   @override
@@ -32,15 +35,18 @@ class Follow implements friendsRepo {
   }
 
   @override
-  Future<void> removeFriend(Friend myFriend) async {
+  Future<bool> removeFriend(Friend myFriend) async {
     try {
       String? docID = await _firestoreService.getDocID(
           collections().friends, 'UserID', myFriend.UserID);
       if (docID != null) {
-        await _firestoreService.deleteData(collections().friends, docID);
+        await _firestoreService.deleteDocWith2Attributes(collections().friends, 'UserID', myFriend.UserID, 'FriendID', myFriend.FriendID);
+
       }
+      return true;
     } catch (e) {
       print('Error removing friend: ${e.toString()}');
+      return false;
     }
   }
 
@@ -78,5 +84,15 @@ class Follow implements friendsRepo {
       print('Error fetching friends list: ${e.toString()}');
       return [];
     }
+  }
+
+  Future<bool> isFriend(String myUserID, String friendID) async {
+   try{
+    bool isFriend = await _firestoreService.checkIfDocExistsWith2Attributes(collections().friends, 'UserID', myUserID, 'FriendID', friendID);
+    return true;
+   }catch(e){
+    print('Error checking if friend: ${e.toString()}');
+    return false;
+   }
   }
 }

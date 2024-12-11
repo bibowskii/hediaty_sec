@@ -57,6 +57,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
         centerTitle: true,
         shadowColor: Colors.black54,
         actions: [
+          IconButton(onPressed: (){}, icon: Icon(Icons.notifications)),
           IconButton(
             icon: Icon(context.watch<theme>().dark
                 ? Icons.wb_sunny

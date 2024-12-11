@@ -4,7 +4,12 @@ import 'package:hediaty_sec/models/data/Event.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/Event_details/edit_event_screen.dart';
 import 'package:hediaty_sec/screens/Event_details/event_details_controller.dart';
+import 'package:hediaty_sec/screens/Event_details/widgets/gift_card.dart';
+import 'package:hediaty_sec/screens/gift_details/gift_details.dart';
+import 'package:hediaty_sec/services/user_manager.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
+import 'package:hediaty_sec/screens/add_gifts_screen/add_gfits.dart';
 
 class EventDetailsScreen extends StatefulWidget {
   final Event event;
@@ -16,20 +21,41 @@ class EventDetailsScreen extends StatefulWidget {
 
 class _EventDetailsScreenState extends State<EventDetailsScreen> {
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _fetchGifts();
   }
 
-  Future<void> _fetchGifts() async{
+  Future<void> _fetchGifts() async {
     await EventDetailsController.instance.getGifts(widget.event);
     setState(() {});
   }
 
+  Widget _myGift() {
+    if (widget.event.userID == UserManager().getUserId()!) {
+      return FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AddGfits(EventID: widget.event.id)));
+        },
+        child: Row(
+          children: [Icon(Iconsax.add), Icon(Iconsax.gift)],
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:
+          context.watch<theme>().dark ? Colors.black : Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor:
+            context.watch<theme>().dark ? Colors.black : Colors.white,
         title: Text(widget.event.name),
         actions: [
           IconButton(
@@ -41,28 +67,67 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               myEvent: widget.event,
                             )));
               },
-              icon: Icon(Icons.edit)),
+              icon: const Icon(Icons.edit)),
         ],
       ),
       body: Stack(
         children: [
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: context.watch<theme>().dark ? Colors.black : Colors.white,
               borderRadius: BorderRadius.circular(40.0),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              //mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(),
-                Text('Description:'),
-                Text('${widget.event.description}'),
-                Text("location:"),
-                Text(widget.event.location),
-                Text('Date:'),
-                Text(widget.event.date.toString()),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                //mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Row(),
+                  const Text(
+                    'Description:',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    '${widget.event.description}',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      //fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Text(
+                    "location:",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    widget.event.location,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      //fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Text(
+                    'Date:',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    widget.event.date.toString(),
+                    style: const TextStyle(
+                      fontSize: 20,
+                      //fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           Positioned(
@@ -78,23 +143,41 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 borderRadius: BorderRadius.circular(40.0),
               ),
               child: EventDetailsController.instance.gifts.isEmpty
-                  ? Center(
+                  ? const Center(
                       child: Text('No Gifts'),
                     )
-                  : Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: EventDetailsController.instance.gifts
-                          .map((gift) => Chip(
-                                label: Text(gift.name),
-                                avatar: Icon(CupertinoIcons.gift),
-                              ))
-                          .toList(), // This ensures a flat list of widgets
+                  : Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        //temp till is pledged and images are done
+                        children: EventDetailsController.instance.gifts
+                            .map(
+                              (gift) => GestureDetector(
+                                child: GiftCard(
+                                    name: gift.name, PledgedBy: gift.pledgedBy),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => GiftDetails(
+                                        myGift: gift,
+                                        eventName: widget.event.name,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
+                            .toList(),
+                      ),
                     ),
             ),
           ),
         ],
       ),
+      floatingActionButton: _myGift(),
     );
   }
 }

@@ -1,6 +1,7 @@
 //supposedly done
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hediaty_sec/services/user_manager.dart';
 
 class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -113,6 +114,51 @@ class FirestoreService {
       await _db.collection(collection).doc(documentId).delete();
     } catch (e) {
       print("Error deleting data: $e");
+    }
+  }
+  // update single att
+
+Future<void> updateSingelAtt(String collection, String documentID, String att, String Value)async{
+    try{
+      await _db.collection(collection).doc(documentID).update({att: UserManager().getUserId()});
+    }catch(e){
+      print(e.toString());
+  }
+
+  // codeium is fun
+  // Check if a document with 2 attributes exists
+
+
+
+}
+
+  Future<bool> checkIfDocExistsWith2Attributes(String collection, String attribute1, String value1, String attribute2, String value2) async {
+    try {
+      QuerySnapshot snapshot = await _db
+          .collection(collection)
+          .where(attribute1, isEqualTo: value1)
+          .where(attribute2, isEqualTo: value2)
+          .get();
+      return true;
+    } catch (e) {
+      print("Error checking if document exists: $e");
+      return false;
+    }
+  }
+
+  // Delete a document by 2 attributes
+  Future<void> deleteDocWith2Attributes(String collection, String attribute1, String value1, String attribute2, String value2) async {
+    try {
+      QuerySnapshot snapshot = await _db
+          .collection(collection)
+          .where(attribute1, isEqualTo: value1)
+          .where(attribute2, isEqualTo: value2)
+          .get();
+      if (snapshot.docs.isNotEmpty) {
+        await snapshot.docs.first.reference.delete();
+      }
+    } catch (e) {
+      print("Error deleting document by 2 attributes: $e");
     }
   }
 }
