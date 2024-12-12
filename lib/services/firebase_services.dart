@@ -1,7 +1,6 @@
 //supposedly done
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hediaty_sec/services/user_manager.dart';
 
 class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;

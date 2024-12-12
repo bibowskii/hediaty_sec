@@ -5,11 +5,11 @@ import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/Event_details/edit_event_screen.dart';
 import 'package:hediaty_sec/screens/Event_details/event_details_controller.dart';
 import 'package:hediaty_sec/screens/Event_details/widgets/gift_card.dart';
+import 'package:hediaty_sec/screens/add_gifts_screen/add_gfits.dart';
 import 'package:hediaty_sec/screens/gift_details/gift_details.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
-import 'package:hediaty_sec/screens/add_gifts_screen/add_gfits.dart';
 
 class EventDetailsScreen extends StatefulWidget {
   final Event event;

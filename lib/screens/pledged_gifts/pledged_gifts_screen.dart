@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hediaty_sec/models/domain/users_methods.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/Event_details/widgets/gift_card.dart';
 import 'package:hediaty_sec/screens/gift_details/gift_details.dart';
 import 'package:hediaty_sec/screens/pledged_gifts/pledgd_gifts_screen_controller.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:provider/provider.dart';
-import 'package:hediaty_sec/models/data/users.dart';
 
 class PledgedGiftsScreen extends StatefulWidget {
   const PledgedGiftsScreen({super.key});

@@ -8,7 +8,6 @@ import 'package:hediaty_sec/screens/event_list/event_list_screen.dart';
 import 'package:hediaty_sec/screens/friends_list/friends_list_screen.dart';
 import 'package:hediaty_sec/screens/pledged_gifts/pledged_gifts_screen.dart';
 import 'package:hediaty_sec/screens/profile/profile_screen.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
 import '../services/auth_service.dart';

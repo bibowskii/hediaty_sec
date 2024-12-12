@@ -1,12 +1,8 @@
 //far from done, needs ui
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hediaty_sec/models/domain/gift_methods.dart';
-import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/gift_details/gift_details_controller.dart';
 import 'package:hediaty_sec/screens/gift_details/pledge_button.dart';
-import 'package:hediaty_sec/services/user_manager.dart';
-import 'package:provider/provider.dart';
 
 import '../../models/data/Gifts.dart';
 

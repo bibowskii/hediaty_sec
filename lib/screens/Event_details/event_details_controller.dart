@@ -1,5 +1,4 @@
 import 'package:hediaty_sec/models/domain/gift_methods.dart';
-import 'package:hediaty_sec/screens/event_list/event_list_controller.dart';
 
 import '../../models/data/Event.dart';
 import '../../models/data/Gifts.dart';

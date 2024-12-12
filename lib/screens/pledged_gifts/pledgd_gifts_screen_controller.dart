@@ -1,6 +1,5 @@
 import 'package:hediaty_sec/models/data/Gifts.dart';
 import 'package:hediaty_sec/models/domain/gift_methods.dart';
-import '../../models/data/users.dart';
 
 class PledgdGiftsScreenController {
   static final PledgdGiftsScreenController instance = PledgdGiftsScreenController._();

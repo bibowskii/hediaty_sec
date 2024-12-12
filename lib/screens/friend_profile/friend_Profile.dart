@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hediaty_sec/models/domain/friends_methods.dart';
-import 'package:hediaty_sec/services/user_manager.dart';
-import 'package:provider/provider.dart';
 import 'package:hediaty_sec/models/data/users.dart';
+import 'package:hediaty_sec/models/domain/friends_methods.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/Event_details/event_details_screen.dart';
 import 'package:hediaty_sec/screens/friend_profile/friend_profile_controller.dart';
+import 'package:hediaty_sec/services/user_manager.dart';
+import 'package:provider/provider.dart';
+
 import '../../models/data/friends.dart';
 
 
