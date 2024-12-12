@@ -7,12 +7,13 @@ class PledgdGiftsScreenController {
   PledgdGiftsScreenController._();
   List<Gift> pledgedGifts = [];
 
-  Future<void> GetMyPledgedGifts(User myUser) async {
+  Future<void> GetMyPledgedGifts(String UserID) async {
     try {
       //var myUser = await userMethods().getUserByID(UserManager().currentUserId!);
-      var gits = await giftMethods().getListPledges(myUser);
+      var gits = await giftMethods().getListPledges(UserID);
 
-      pledgedGifts = await gits.map((gift) => Gift.fromMap(gift)).toList();
+      pledgedGifts = gits.map((gift) => Gift.fromMap(gift)).toList();
+      print(pledgedGifts);
     } catch (e) {
       print(e.toString());
     }

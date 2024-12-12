@@ -36,7 +36,7 @@ class GiftCard extends StatelessWidget {
               Row(
                 children: [
                   Text("Status: "),
-                  PledgedBy != null? Text(' Pledged by ${PledgedBy}'): Text(' Not Pledged'),
+                  PledgedBy != null? Text(' Pledged'): Text(' Not Pledged'),
           
                 ],
               )

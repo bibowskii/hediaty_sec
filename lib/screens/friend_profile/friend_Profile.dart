@@ -47,7 +47,6 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
       appBar: AppBar(
         backgroundColor:
             context.watch<theme>().dark ? Colors.black : Colors.white,
-        title: Text(widget.friend.name!),
       ),
       body: Stack(
         children: [
@@ -97,7 +96,7 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
                     ),
                   ),
                 ),
-                GestureDetector(
+                widget.friend.id != UserManager().getUserId() ? GestureDetector(
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -119,7 +118,7 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
                       widget.friend.id,
                     );
 
-                    // Perform the asynchronous operation
+
                     bool success;
                     if (FriendProfileController.instance.isFriend) {
                       success = await Follow().removeFriend(myFriend);
@@ -138,7 +137,7 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
                       print("Failed to update friendship status");
                     }
                   },
-                ),
+                ):SizedBox(),
 
               ],
             ),

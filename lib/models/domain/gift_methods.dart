@@ -102,12 +102,22 @@ Future<void> pledge(Gift myGift)async{
     }
 }
 
+Future<void> unpledge(Gift myGift)async{
+    try{
+      String? docID = await _firestoreService.getDocID(
+          collections().gifts, 'id', myGift.id);
+      await _firestoreService.updateSingelAtt(collections().gifts, docID!, 'pledgedBy', '');
+    }catch(e){
+      print(e.toString());
+    }
+}
+
   @override
-  Future<List<Map<String, dynamic>>> getListPledges(User myUser) async {
+  Future<List<Map<String, dynamic>>> getListPledges(String UserID) async {
     List<Map<String, dynamic>> pledges = [];
     try {
       pledges = await _firestoreService.getList(
-          collections().giftPledge, 'pledgedBy', myUser.id);
+          collections().gifts, 'pledgedBy', UserID);
       print('pledged found');
       return pledges;
     } catch (e) {

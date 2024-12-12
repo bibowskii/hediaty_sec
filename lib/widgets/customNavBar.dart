@@ -36,9 +36,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:
-            context.watch<theme>().dark ? Colors.black : Colors.white,
-        //backgroundColor: Colors.white,
+        backgroundColor: context.watch<theme>().dark ? Colors.black : Colors.white,
         automaticallyImplyLeading: false,
         leading: IconButton(
           icon: const Icon(Icons.logout),
@@ -57,7 +55,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
         centerTitle: true,
         shadowColor: Colors.black54,
         actions: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.notifications)),
+          IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
           IconButton(
             icon: Icon(context.watch<theme>().dark
                 ? Icons.wb_sunny
@@ -66,39 +64,22 @@ class _CustomNavBarState extends State<CustomNavBar> {
               context.read<theme>().changeTheme();
             },
           ),
-          const SizedBox(width: 6,)
+          const SizedBox(width: 6),
         ],
       ),
-      body: _screens[_selectedIndex], // Display selected screen
+      body: IndexedStack(
+        index: _selectedIndex, // Show screen corresponding to selected index
+        children: _screens, // The screens are maintained here
+      ),
       bottomNavigationBar: CurvedNavigationBar(
         index: _selectedIndex,
         height: 60.0,
         items: <Widget>[
-          Icon(
-            Icons.home,
-            size: 30,
-            color: Colors.black,
-          ),
-          Icon(
-            Icons.event,
-            size: 30,
-            color: Colors.black,
-          ),
-          Icon(
-            Icons.people,
-            size: 30,
-            color: Colors.black,
-          ),
-          Icon(
-            Icons.card_giftcard,
-            size: 30,
-            color: Colors.black,
-          ),
-          Icon(
-            Icons.account_circle,
-            size: 30,
-            color: Colors.black,
-          ),
+          Icon(Icons.home, size: 30, color: Colors.black),
+          Icon(Icons.event, size: 30, color: Colors.black),
+          Icon(Icons.people, size: 30, color: Colors.black),
+          Icon(Icons.card_giftcard, size: 30, color: Colors.black),
+          Icon(Icons.account_circle, size: 30, color: Colors.black),
         ],
         color: Colors.blueAccent,
         buttonBackgroundColor: Colors.white,
