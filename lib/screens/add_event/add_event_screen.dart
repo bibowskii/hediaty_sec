@@ -6,6 +6,7 @@ import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:hediaty_sec/widgets/textField.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class addEventScreen extends StatefulWidget {
   const addEventScreen({super.key});
@@ -33,7 +34,7 @@ class _addEventScreenState extends State<addEventScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true, // Ensures the screen resizes when the keyboard opens
+      resizeToAvoidBottomInset: true,
       backgroundColor: context.watch<theme>().dark
           ? CupertinoColors.darkBackgroundGray
           : CupertinoColors.extraLightBackgroundGray,
@@ -47,7 +48,6 @@ class _addEventScreenState extends State<addEventScreen> {
                   initialDate: _selectedDate,
                   firstDate: DateTime(_selectedDate.year, _selectedDate.month),
                   lastDate: DateTime(9999, 12, 31),
-                  //lastDate: DateTime(_selectedDate.year, _selectedDate.month + 1, 0),
                   onDateChanged: (DateTime newDate) {
                     setState(() {
                       _selectedDate = newDate;
@@ -77,12 +77,6 @@ class _addEventScreenState extends State<addEventScreen> {
                       isObsecure: false,
                       controller: eventLocationController,
                     ),
-                    CustomTextField(
-                      hintText: 'Time',
-                      icon: CupertinoIcons.clock,
-                      isObsecure: false,
-                      controller: eventTimeController,
-                    ),
                     SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () async {
@@ -90,7 +84,7 @@ class _addEventScreenState extends State<addEventScreen> {
                           eventNameController.text,
                           eventDescriptionController.text,
                           _selectedDate,
-                          '1',
+                          Uuid().v1(),
                           eventLocationController.text,
 
                             // user manager removed for testing methods, it works when u sign in from the beginning
@@ -100,8 +94,6 @@ class _addEventScreenState extends State<addEventScreen> {
                         SnackBar snackBar = SnackBar(
                           content: Text('Event Created Successfully!'),
                           backgroundColor: Colors.green,
-
-
                         );
                         // Navigate to event page details later
                       },
