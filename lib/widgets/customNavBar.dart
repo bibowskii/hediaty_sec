@@ -20,15 +20,15 @@ class CustomNavBar extends StatefulWidget {
 
 class _CustomNavBarState extends State<CustomNavBar> {
   // Initial selected index
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
 
   // List of screens
   final List<Widget> _screens = [
-    Homepage(),
     EventListScreen(),
     FriendsListScreen(),
+    Homepage(),
     PledgedGiftsScreen(),
-    profileScreen(), // Corrected here
+    profileScreen(),
   ];
 
   @override
@@ -74,9 +74,9 @@ class _CustomNavBarState extends State<CustomNavBar> {
         index: _selectedIndex,
         height: 60.0,
         items: <Widget>[
-          Icon(Icons.home, size: 30, color: Colors.black),
           Icon(Icons.event, size: 30, color: Colors.black),
           Icon(Icons.people, size: 30, color: Colors.black),
+          Icon(Icons.home, size: 30, color: Colors.black),
           Icon(Icons.card_giftcard, size: 30, color: Colors.black),
           Icon(Icons.account_circle, size: 30, color: Colors.black),
         ],

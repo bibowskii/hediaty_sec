@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:hediaty_sec/models/data/users.dart';
 import 'package:hediaty_sec/models/domain/users_methods.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
+import 'package:hediaty_sec/services/image_to_stringVV.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
 class profileScreen extends StatefulWidget {
   profileScreen({super.key});
@@ -15,7 +17,9 @@ class profileScreen extends StatefulWidget {
 
 class _profileScreenState extends State<profileScreen> {
   User? userData;
-  bool isLoading = true;  // To handle loading state
+  bool isLoading = true;
+  var profileImage;
+
 
   @override
   void initState() {
@@ -29,6 +33,7 @@ class _profileScreenState extends State<profileScreen> {
       setState(() {
         userData = User.fromMap(user!);
         isLoading = false;
+        profileImage =ImageConverterr().stringToImage(userData!.imageURL!);
       });
     } catch (e) {
       setState(() {
@@ -38,110 +43,134 @@ class _profileScreenState extends State<profileScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: context.watch<theme>().dark ? Colors.black : Colors.white,
+      backgroundColor:
+          context.watch<theme>().dark ? Colors.black : Colors.white,
       appBar: AppBar(
-        backgroundColor: context.watch<theme>().dark ? Colors.black : Colors.white,
+        backgroundColor:
+            context.watch<theme>().dark ? Colors.black : Colors.white,
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : userData == null
-          ? Center(child: Text('No user data found'))
-          : Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: context.watch<theme>().dark ? Colors.black : Colors.white,
-              borderRadius: BorderRadius.circular(40.0),
-            ),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          child: Icon(CupertinoIcons.person),
-                          radius: 50,
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              userData!.name ?? 'No Name',  // Use fetched data
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
+              ? Center(child: Text('No user data found'))
+              : Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: context.watch<theme>().dark
+                            ? Colors.black
+                            : Colors.white,
+                        borderRadius: BorderRadius.circular(40.0),
+                      ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Stack(
+                                    children: [
+                                      CircleAvatar(
+                                        /*child: userData?.imageURL == null?
+                                            Icon(CupertinoIcons.person):*/
+                                        backgroundImage:profileImage !=null? MemoryImage(profileImage!): AssetImage('lib/assets/icons/favicon.png'),
+                                        radius: 70,
+                                      ),
+                                      Positioned(
+                                        right: 0,
+                                        bottom: 0,
+                                        child: IconButton(
+                                          icon: Icon(CupertinoIcons.camera),
+                                          color: Colors.white,
+                                          onPressed: () async{
+                                             var selectedImage = await ImageConverterr().pickAndCompressImageToString();
+                                            setState((){
+
+                                              userData!.imageURL= selectedImage;
+                                              userMethods().editUser(userData!);
+                                              _fetchUserData();
+                                            });
+
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        userData!.name ?? 'No Name',
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(userData!.email ?? 'No Email',
+                                          style: TextStyle(fontSize: 18)),
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(userData!.number ?? 'No Number',
+                                          style: TextStyle(fontSize: 18)),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(userData!.email ?? 'No Email',  // Use fetched data
-                                style: TextStyle(fontSize: 18)),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(userData!.number ?? 'No Number',  // Use fetched data
-                                style: TextStyle(fontSize: 18)),
-                          ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      top: 200,
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: context.watch<theme>().dark
+                              ? CupertinoColors.darkBackgroundGray
+                              : CupertinoColors.extraLightBackgroundGray,
+                          borderRadius: BorderRadius.circular(40.0),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            top: 200,
-            height: MediaQuery.of(context).size.height * 0.6,
-            child: Container(
-              decoration: BoxDecoration(
-                color: context.watch<theme>().dark
-                    ? CupertinoColors.darkBackgroundGray
-                    : CupertinoColors.extraLightBackgroundGray,
-                borderRadius: BorderRadius.circular(40.0),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    ListTile(
-                      leading: Icon(CupertinoIcons.person_crop_circle),
-                      title: Text("Update Profile"),
-                      onTap: () {
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(CupertinoIcons.delete),
-                      title: Text("Delete Profile"),
-                      onTap: () {
-
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(CupertinoIcons.settings),
-                      title: Text("Settings"),
-                      onTap: () {
-                      },
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                leading:
+                                    Icon(CupertinoIcons.person_crop_circle),
+                                title: Text("Update Profile"),
+                                onTap: () {},
+                              ),
+                              ListTile(
+                                leading: Icon(CupertinoIcons.delete),
+                                title: Text("Delete Profile"),
+                                onTap: () {},
+                              ),
+                              ListTile(
+                                leading: Icon(CupertinoIcons.settings),
+                                title: Text("Settings"),
+                                onTap: () {},
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

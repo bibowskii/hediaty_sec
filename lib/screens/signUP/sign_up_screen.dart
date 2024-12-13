@@ -5,6 +5,7 @@ import 'package:hediaty_sec/providers/is_logged_in_provider.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/services/auth_service.dart';
 import 'package:hediaty_sec/widgets/textField.dart';
+import 'package:hediaty_sec/wrapper/wrapper.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
@@ -175,7 +176,7 @@ class _signUpScreenState extends State<SignUpScreen> {
                               await userMethods().createUser(myUser);
                                 debugPrint('changing state');
                                 context.read<isLogged>().changeState();
-                                Navigator.pushReplacementNamed(context, '/home');
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AuthWrapper()));
                                 debugPrint('state change');
                             }
 

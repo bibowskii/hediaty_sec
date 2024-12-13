@@ -15,6 +15,7 @@ class friendCard extends StatelessWidget {
         children: [
           const CircleAvatar(
             child: Icon(Iconsax.user),
+            radius: 40,
           ),
           Text(myUser.name!),
         ],
