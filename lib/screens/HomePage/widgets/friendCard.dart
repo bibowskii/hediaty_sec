@@ -11,15 +11,14 @@ class friendCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var profileImage;
-    if(myUser.imageURL != null) {
+    if(myUser.imageURL != '') {
       profileImage = ImageConverterr().stringToImage(myUser.imageURL!);
     }
     return Container(
-      //width: 100,
-      //height: 100,
       child: Column(
         children: [
           CircleAvatar(
+            backgroundColor: Colors.transparent,
             backgroundImage:profileImage!=null? MemoryImage(profileImage): AssetImage('lib/assets/icons/favicon.png'),
             radius: 70,
           ),

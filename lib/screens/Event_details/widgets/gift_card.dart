@@ -1,13 +1,21 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
+
 // until images logic is implemented
 class GiftCard extends StatelessWidget {
   final String name;
   String? PledgedBy;
   final String? ImageURl;
-  GiftCard({super.key, required this.name, required this.PledgedBy, this.ImageURl});
+  final bool? Status;
+  GiftCard(
+      {super.key,
+      required this.name,
+      required this.PledgedBy,
+      this.ImageURl,
+      this.Status});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +25,7 @@ class GiftCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(20.0),
       child: Container(
         decoration: BoxDecoration(
-          color: context.watch<theme>().dark? Colors.black: Colors.white,
+          color: context.watch<theme>().dark ? Colors.black : Colors.white,
           borderRadius: BorderRadius.circular(15),
         ),
         width: 190,
@@ -30,24 +38,36 @@ class GiftCard extends StatelessWidget {
                 //temp till images are done
                 child: Icon(Iconsax.gift),
               ),
-              SizedBox(height: 4,),
-              Text(name, style: TextStyle(fontSize: 20),),
+              SizedBox(
+                height: 4,
+              ),
+              Text(
+                name,
+                style: TextStyle(fontSize: 20),
+              ),
               Row(
                 children: [
                   Text("Status: "),
-                  PledgedBy != null? Text(' Pledged'): Text(' Not Pledged'),
-          
+                  PledgedBy != ''
+                      ? Status != false || Status !=''
+                          ? CircleAvatar(
+                              backgroundColor: Colors.green,
+                              radius: 5
+                            )
+                          : CircleAvatar(
+                              backgroundColor: Colors.red,
+                              radius: 5
+                            )
+                      : CircleAvatar(
+                          backgroundColor: CupertinoColors.inactiveGray,
+                          radius: 5
+                        ),
                 ],
               )
-          
             ],
           ),
         ),
       ),
-
-
-
-
     );
   }
 }

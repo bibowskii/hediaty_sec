@@ -3,31 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/Event_details/widgets/gift_card.dart';
 import 'package:hediaty_sec/screens/gift_details/gift_details.dart';
-import 'package:hediaty_sec/screens/pledged_gifts/pledgd_gifts_screen_controller.dart';
+import 'package:hediaty_sec/screens/pledged_gifts/my_gifts_controller.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:provider/provider.dart';
 
-class PledgedGiftsScreen extends StatefulWidget {
-  const PledgedGiftsScreen({super.key});
+class myGifts extends StatefulWidget {
+  const myGifts({super.key});
 
   @override
-  State<PledgedGiftsScreen> createState() => _PledgedGiftsScreenState();
+  State<myGifts> createState() => _myGiftsState();
+
 }
 
-class _PledgedGiftsScreenState extends State<PledgedGiftsScreen> {
-  @override
+class _myGiftsState extends State<myGifts> {
   void initState() {
     super.initState();
     _fetchGifts();
   }
 
   Future<void> _fetchGifts() async {
-    await PledgdGiftsScreenController.instance.GetMyPledgedGifts(UserManager().getUserId()!);
+    await MyGiftsScreenController.instance.GetMyPledgedGifts(UserManager().getUserId()!);
     setState(() {});
   }
 
   Widget build(BuildContext context) {
-    return RefreshIndicator(
+     return RefreshIndicator(
       onRefresh: _fetchGifts,
       child: Scaffold(
         backgroundColor: context.watch<theme>().dark
@@ -39,11 +39,11 @@ class _PledgedGiftsScreenState extends State<PledgedGiftsScreen> {
             spacing: 8,
             runSpacing: 8,
             //temp till is pledged and images are done
-            children: PledgdGiftsScreenController.instance.pledgedGifts
+            children: MyGiftsScreenController.instance.myGifts
                 .map(
                   (gift) => GestureDetector(
                 child: GiftCard(
-                    name: gift.name, PledgedBy: gift.pledgedBy, Status: gift.status,),
+                  name: gift.name, PledgedBy: gift.pledgedBy, Status: gift.status,),
                 onTap: () {
                   Navigator.push(
                     context,

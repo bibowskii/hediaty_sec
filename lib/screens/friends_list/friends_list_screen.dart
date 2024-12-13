@@ -54,7 +54,7 @@ class _FriendsListScreenState extends State<FriendsListScreen> {
                     itemBuilder: (context, index) {
                       final friend = friends[index];
                       var profileImage;
-                      if(friend.imageURL != null) {
+                      if(friend.imageURL != '') {
                         profileImage = ImageConverterr().stringToImage(friend.imageURL!);
                       }
                       return ListTile(

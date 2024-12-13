@@ -33,7 +33,9 @@ class _profileScreenState extends State<profileScreen> {
       setState(() {
         userData = User.fromMap(user!);
         isLoading = false;
-        profileImage =ImageConverterr().stringToImage(userData!.imageURL!);
+        if(userData != '') {
+          profileImage = ImageConverterr().stringToImage(userData!.imageURL!);
+        }
       });
     } catch (e) {
       setState(() {
@@ -75,12 +77,51 @@ class _profileScreenState extends State<profileScreen> {
                                 children: [
                                   Stack(
                                     children: [
-                                      CircleAvatar(
-                                        /*child: userData?.imageURL == null?
-                                            Icon(CupertinoIcons.person):*/
-                                        backgroundImage:profileImage !=null? MemoryImage(profileImage!): AssetImage('lib/assets/icons/favicon.png'),
-                                        radius: 70,
+                                      //ChatGPT for the pop up part
+                                      GestureDetector(
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return Dialog(
+                                                backgroundColor:  Colors.transparent,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(20),
+
+                                                ),
+                                                child: Container(
+                                                  padding: EdgeInsets.all(16),
+                                                  child: Column(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    children: [
+                                                      CircleAvatar(
+                                                        backgroundImage: profileImage != null
+                                                            ? MemoryImage(profileImage!)
+                                                            : AssetImage('lib/assets/icons/favicon.png') as ImageProvider,
+                                                        radius: 200,
+                                                      ),
+                                                      SizedBox(height: 20),
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                        },
+                                                        child: Text('Close'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: CircleAvatar(
+                                          backgroundImage: profileImage != null
+                                              ? MemoryImage(profileImage!)
+                                              : AssetImage('lib/assets/icons/favicon.png') as ImageProvider,
+                                          radius: 70,
+                                        ),
                                       ),
+
                                       Positioned(
                                         bottom: 0,
                                         right: 0,
@@ -154,13 +195,13 @@ class _profileScreenState extends State<profileScreen> {
                                 onTap: () {},
                               ),
                               ListTile(
-                                leading: Icon(CupertinoIcons.delete),
-                                title: Text("Delete Profile"),
+                                leading: Icon(CupertinoIcons.settings),
+                                title: Text("Settings"),
                                 onTap: () {},
                               ),
                               ListTile(
-                                leading: Icon(CupertinoIcons.settings),
-                                title: Text("Settings"),
+                                leading: Icon(CupertinoIcons.delete, color: Colors.red,),
+                                title: Text("Delete Profile", style: TextStyle(color: Colors.red),),
                                 onTap: () {},
                               ),
                             ],

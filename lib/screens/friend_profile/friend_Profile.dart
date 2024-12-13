@@ -5,6 +5,7 @@ import 'package:hediaty_sec/models/domain/friends_methods.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/Event_details/event_details_screen.dart';
 import 'package:hediaty_sec/screens/friend_profile/friend_profile_controller.dart';
+import 'package:hediaty_sec/services/image_to_stringVV.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -38,9 +39,13 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final events = FriendProfileController.instance.friendEvents;
-
     final nameStyle = TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
     final infoStyle = TextStyle(fontSize: 16, color: Colors.grey[700]);
+
+    var profileImage;
+    if(widget.friend.imageURL != '') {
+      profileImage = ImageConverterr().stringToImage(widget.friend.imageURL!);
+    }
 
     return Scaffold(
       backgroundColor:
@@ -66,8 +71,9 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CircleAvatar(
-                          child: Icon(CupertinoIcons.person),
-                          radius: 50,
+                          backgroundColor: Colors.transparent,
+                          backgroundImage:profileImage!=null? MemoryImage(profileImage): AssetImage('lib/assets/icons/favicon.png'),
+                          radius: 70,
                         ),
                         SizedBox(
                           width: 20,
@@ -98,18 +104,23 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
                   ),
                 ),
                 widget.friend.id != UserManager().getUserId() ? GestureDetector(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20.0),
-                      border: Border.all(color: Colors.blue, width: 2.0),
-                    ),
-                    width: 75,
-                    height: 35,
-                    child: Center(
-                      child: Text(
-                        FriendProfileController.instance.isFriend ? 'Following' : 'Follow',
-                        style: TextStyle(color: Colors.blue),
+                  child: Material(
+                    elevation: 5,
+                    borderRadius: BorderRadius.circular(20.0),
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 100),
+                      decoration: BoxDecoration(
+                        color: FriendProfileController.instance.isFriend? Colors.blue: Colors.white,
+                        borderRadius: BorderRadius.circular(20.0),
+                        border: Border.all(color:FriendProfileController.instance.isFriend? Colors.white: Colors.blue, width: 2.0),
+                      ),
+                      width: 75,
+                      height: 35,
+                      child: Center(
+                        child: Text(
+                          FriendProfileController.instance.isFriend ? 'Following' : 'Follow',
+                          style: TextStyle(color:FriendProfileController.instance.isFriend? Colors.white: Colors.blue),
+                        ),
                       ),
                     ),
                   ),
@@ -127,14 +138,13 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
                       success = await Follow().followFriend(myFriend);
                     }
 
-                    // Update the state synchronously
                     if (success) {
                       setState(() {
                         FriendProfileController.instance.isFriend =
                         !FriendProfileController.instance.isFriend;
                       });
                     } else {
-                      // Handle failure (optional)
+
                       print("Failed to update friendship status");
                     }
                   },
@@ -146,7 +156,7 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
           Positioned(
             left: 0,
             right: 0,
-            top: 200,
+            top: 220,
             height: MediaQuery.of(context).size.height * 0.7,
             child: Container(
               decoration: BoxDecoration(

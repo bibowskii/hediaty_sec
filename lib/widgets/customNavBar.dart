@@ -7,6 +7,7 @@ import 'package:hediaty_sec/screens/HomePage/homePage.dart';
 import 'package:hediaty_sec/screens/event_list/event_list_screen.dart';
 import 'package:hediaty_sec/screens/friends_list/friends_list_screen.dart';
 import 'package:hediaty_sec/screens/pledged_gifts/pledged_gifts_screen.dart';
+import 'package:hediaty_sec/screens/pledged_gifts/tab_bar.dart';
 import 'package:hediaty_sec/screens/profile/profile_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +28,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
     EventListScreen(),
     FriendsListScreen(),
     Homepage(),
-    PledgedGiftsScreen(),
+    GiftTabBarScreen(),
     profileScreen(),
   ];
 
