@@ -5,6 +5,8 @@ import 'package:hediaty_sec/screens/friend_profile/friend_Profile.dart';
 import 'package:hediaty_sec/screens/friends_list/friends_list_controller.dart';
 import 'package:provider/provider.dart';
 
+import '../../services/image_to_stringVV.dart';
+
 class FriendsListScreen extends StatefulWidget {
   @override
   _FriendsListScreenState createState() => _FriendsListScreenState();
@@ -51,12 +53,14 @@ class _FriendsListScreenState extends State<FriendsListScreen> {
                     itemCount: friends.length,
                     itemBuilder: (context, index) {
                       final friend = friends[index];
+                      var profileImage;
+                      if(friend.imageURL != null) {
+                        profileImage = ImageConverterr().stringToImage(friend.imageURL!);
+                      }
                       return ListTile(
                         leading: CircleAvatar(
-                          /* backgroundImage: friend.imageURL != null
-                              ? NetworkImage(friend.imageURL!)
-                              : null,*/
-                          child: Icon(Icons.person),
+                          backgroundImage:profileImage!=null? MemoryImage(profileImage): AssetImage('lib/assets/icons/favicon.png'),
+                          radius: 30,
                         ),
                         title: Text(friend.name!),
                         subtitle: Text(friend.number!),

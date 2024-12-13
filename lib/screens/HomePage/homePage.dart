@@ -106,7 +106,7 @@ class _HomepageState extends State<Homepage> {
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8.0),
-                                      child: friendCard(myUser: user),
+                                      child: friendCard(myUser: user, ),
                                     ),
                                     onTap: () {
                                       Navigator.push(

@@ -82,15 +82,14 @@ class _profileScreenState extends State<profileScreen> {
                                         radius: 70,
                                       ),
                                       Positioned(
-                                        right: 0,
                                         bottom: 0,
+                                        right: 0,
                                         child: IconButton(
-                                          icon: Icon(CupertinoIcons.camera),
+                                          icon: Icon(CupertinoIcons.add_circled_solid,size: 30,),
                                           color: Colors.white,
                                           onPressed: () async{
                                              var selectedImage = await ImageConverterr().pickAndCompressImageToString();
                                             setState((){
-
                                               userData!.imageURL= selectedImage;
                                               userMethods().editUser(userData!);
                                               _fetchUserData();

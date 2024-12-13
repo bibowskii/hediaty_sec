@@ -4,6 +4,7 @@ import 'package:hediaty_sec/models/domain/users_methods.dart';
 import 'package:hediaty_sec/providers/is_logged_in_provider.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/services/auth_service.dart';
+import 'package:hediaty_sec/services/image_to_stringVV.dart';
 import 'package:hediaty_sec/widgets/textField.dart';
 import 'package:hediaty_sec/wrapper/wrapper.dart';
 import 'package:iconsax/iconsax.dart';
@@ -27,6 +28,7 @@ class _signUpScreenState extends State<SignUpScreen> {
     final numberController = TextEditingController();
     String? nameError = '';
     String? numberError = '';
+    var profileImage = null;
 
     return Scaffold(
       backgroundColor: context.watch<theme>().dark
@@ -84,11 +86,30 @@ class _signUpScreenState extends State<SignUpScreen> {
               child: Center(
                 child: Column(
                   children: [
-                    /*SizedBox(height: 50,),
-                    CircleAvatar(
-                      radius: 30,
-                      child: Icon(CupertinoIcons.profile_circled),
-                    ),*/
+                    Stack(
+                      children: [
+                        CircleAvatar(
+                          backgroundImage:profileImage !=null? MemoryImage(profileImage!): AssetImage('lib/assets/icons/favicon.png'),
+                          radius: 70,
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: IconButton(
+                            icon: Icon(CupertinoIcons.add_circled_solid,size: 30,),
+                            color: Colors.white,
+                            onPressed: () async{
+                              setState(()async{
+                                var selectedImage = await ImageConverterr().pickAndCompressImageToString();
+                                profileImage = ImageConverterr().stringToImage(selectedImage!);
+
+                              });
+
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -102,10 +123,10 @@ class _signUpScreenState extends State<SignUpScreen> {
                         icon: CupertinoIcons.person,
                         isObsecure: false,
                         controller: nameController),
-                    /*Text(
+                    Text(
                       nameError!,
                       style: TextStyle(color: Colors.red),
-                    ),*/
+                    ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -119,10 +140,10 @@ class _signUpScreenState extends State<SignUpScreen> {
                         icon: CupertinoIcons.number,
                         isObsecure: false,
                         controller: numberController),
-                   /* Text(
+                    Text(
                       numberError!,
                       style: TextStyle(color: Colors.red),
-                    ),*/
+                    ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -143,13 +164,13 @@ class _signUpScreenState extends State<SignUpScreen> {
                       icon: Iconsax.mobile,
                     ),
                     const SizedBox(height: 20),
-                    /*const Text(
+                    const Text(
                       'Enter Your Password',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
-                    ),*/
+                    ),
                     CustomTextField(
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -172,7 +193,7 @@ class _signUpScreenState extends State<SignUpScreen> {
                               await authService().signUp(email: emailController.text, password: passwordController.text);
                               await authService().signIn(email: emailController.text, password: passwordController.text);
                               String currentID =authService().currentUser!.uid;
-                              User myUser = new User(currentID, nameController.text, emailController.text, numberController.text, 'lib/assets/icons/favicon.png' );
+                              User myUser = new User(currentID, nameController.text, emailController.text, numberController.text, profileImage);
                               await userMethods().createUser(myUser);
                                 debugPrint('changing state');
                                 context.read<isLogged>().changeState();
