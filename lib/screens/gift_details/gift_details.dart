@@ -121,7 +121,7 @@ class _GiftDetailsState extends State<GiftDetails> {
                 ),
               SizedBox(height: 16),
               Center(
-                child: PledgeButton(myGift: widget.myGift),
+                child: widget.myGift.userID == UserManager().getUserId() ? Container() :PledgeButton(myGift: widget.myGift),
               ),
               SizedBox(height: 40),
             ],
