@@ -8,6 +8,7 @@ import 'package:hediaty_sec/services/image_to_stringVV.dart';
 import 'package:hediaty_sec/widgets/textField.dart';
 import 'package:hediaty_sec/wrapper/wrapper.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/data/users.dart';
@@ -34,7 +35,8 @@ class _signUpScreenState extends State<EditProfile> {
 
     String? nameError = '';
     String? numberError = '';
-    var profileImage = null;
+    var CurrentProfile = widget.myUser.imageURL != '' ? ImageConverterr().stringToImage(widget.myUser.imageURL!) : null;
+    var profileImage;
 
     return Scaffold(
       backgroundColor: context.watch<theme>().dark
@@ -66,17 +68,17 @@ class _signUpScreenState extends State<EditProfile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    /*Text(
                       'Welcome to Hediaty',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 40,
                       ),
-                    ),
+                    ),*/
                     SizedBox(height: 10),
                     Text(
-                      'Create an account',
+                      'Edit Your Account',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -92,10 +94,11 @@ class _signUpScreenState extends State<EditProfile> {
               child: Center(
                 child: Column(
                   children: [
+                    SizedBox(height: 20,),
                     Stack(
                       children: [
                         CircleAvatar(
-                          backgroundImage:profileImage !=null? MemoryImage(profileImage!): AssetImage('lib/assets/icons/favicon.png'),
+                          backgroundImage:CurrentProfile !=null? MemoryImage(CurrentProfile): AssetImage('lib/assets/icons/favicon.png'),
                           radius: 70,
                         ),
                         Positioned(
@@ -154,13 +157,8 @@ class _signUpScreenState extends State<EditProfile> {
                       height: 20,
                     ),
                     const SizedBox(height: 20),
-                    const Text(
-                      'Enter Your Password',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+
+
                     ElevatedButton(
                         onPressed: () {
                           setState(() async{
