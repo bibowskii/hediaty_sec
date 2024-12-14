@@ -2,28 +2,34 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hediaty_sec/models/data/Gifts.dart';
 import 'package:hediaty_sec/models/domain/gift_methods.dart';
+import 'package:hediaty_sec/screens/pledged_gifts/my_gifts.dart';
 import 'package:hediaty_sec/services/image_to_stringVV.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:hediaty_sec/widgets/textField.dart';
 import 'package:uuid/uuid.dart';
 
-class AddGfits extends StatefulWidget {
+class EditGift extends StatefulWidget {
   String EventID;
-   AddGfits({super.key, required this.EventID});
+  Gift myGift;
+  EditGift({super.key, required this.EventID, required this.myGift});
 
   @override
-  State<AddGfits> createState() => _AddGfitsState();
+  State<EditGift> createState() => _EditGiftState();
 }
 
-class _AddGfitsState extends State<AddGfits> {
+class _EditGiftState extends State<EditGift> {
   @override
   Widget build(BuildContext context) {
     TextEditingController giftName = TextEditingController();
     TextEditingController priceController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
     TextEditingController categoryController = TextEditingController();
-    var selectedImage = null;
-    var GiftImage = null;
+    categoryController.text = widget.myGift.description;
+    priceController.text = widget.myGift.price.toString();
+    giftName.text = widget.myGift.name;
+    descriptionController.text = widget.myGift.description!;
+    var GiftImage = ImageConverterr().stringToImage(widget.myGift.imgURl!);
+    var selectedImage =widget.myGift.imgURl!;
     return Scaffold(
 
       resizeToAvoidBottomInset: true,
@@ -47,11 +53,11 @@ class _AddGfitsState extends State<AddGfits> {
                     color: Colors.white,
                     onPressed: () async{
                       setState(()async{
-                        selectedImage = await ImageConverterr().pickAndCompressImageToString();
+                        selectedImage = (await ImageConverterr().pickAndCompressImageToString())!;
                         GiftImage = ImageConverterr().stringToImage(selectedImage!);
-        
+
                       });
-        
+
                     },
                   ),
                 ),
@@ -67,12 +73,12 @@ class _AddGfitsState extends State<AddGfits> {
             CustomTextField(hintText: 'category', icon: Icons.category, isObsecure: false, controller: categoryController),
             SizedBox(height: 8,),
             ElevatedButton(onPressed: ()async{
-              Gift myGift = Gift(Uuid().v1(), giftName.text, descriptionController.text, categoryController.text, false, double.tryParse(priceController.text)?? 0.0, widget.EventID, UserManager().getUserId()!,selectedImage, '');
+              Gift myGift = Gift(Uuid().v1(), giftName.text, descriptionController.text, categoryController.text, false, priceController.text as double, widget.EventID, UserManager().getUserId()!,selectedImage, '');
               await giftMethods().createGift(myGift);
               Navigator.pop(context);
-            }, child: Text('Add gift')),
-        
-        
+            }, child: Text('Edit gift')),
+
+
           ],
         ),
       ),

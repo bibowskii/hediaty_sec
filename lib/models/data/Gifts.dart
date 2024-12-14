@@ -7,7 +7,7 @@ class Gift {
   double price;
   String eventID; //fk
   String userID; //fk
-  String imgURl;
+  String? imgURl;
   String? pledgedBy;
 
   Gift(this.id, this.name, this.description, this.category, this.status,

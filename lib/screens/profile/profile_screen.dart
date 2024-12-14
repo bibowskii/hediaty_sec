@@ -2,7 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hediaty_sec/models/data/users.dart';
 import 'package:hediaty_sec/models/domain/users_methods.dart';
+import 'package:hediaty_sec/providers/is_logged_in_provider.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
+import 'package:hediaty_sec/screens/login/loginPage.dart';
+import 'package:hediaty_sec/screens/settings/settings.dart';
+import 'package:hediaty_sec/screens/signUP/sign_up_screen.dart';
+import 'package:hediaty_sec/screens/update_profile/update_profile_screen.dart';
 import 'package:hediaty_sec/services/image_to_stringVV.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:provider/provider.dart';
@@ -192,17 +197,55 @@ class _profileScreenState extends State<profileScreen> {
                                 leading:
                                     Icon(CupertinoIcons.person_crop_circle),
                                 title: Text("Update Profile"),
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => EditProfile(myUser: userData!),
+                                    ),
+                                  );
+                                },
                               ),
                               ListTile(
                                 leading: Icon(CupertinoIcons.settings),
                                 title: Text("Settings"),
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Settings(),
+                                    ),
+                                  );
+                                },
                               ),
                               ListTile(
                                 leading: Icon(CupertinoIcons.delete, color: Colors.red,),
                                 title: Text("Delete Profile", style: TextStyle(color: Colors.red),),
-                                onTap: () {},
+                                onTap: () async{
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: Text('Confirmation'),
+                                      content: Text('Are you sure you want to delete your profile?'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () => Navigator.pop(context),
+                                          child: Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () async {
+                                            Navigator.pop(context);
+                                            await userMethods().deleteUser(userData!);
+                                            UserManager().clearUser();
+                                            context.read<isLogged>().changeState();
+                                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => loginPage()), (route) => false);
+                                          },
+                                          child: Text('Delete'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
                               ),
                             ],
                           ),

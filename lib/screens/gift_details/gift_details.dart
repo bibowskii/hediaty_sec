@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hediaty_sec/screens/update_gift/edit_gift_screen.dart';
 import 'package:hediaty_sec/screens/gift_details/gift_details_controller.dart';
 import 'package:hediaty_sec/screens/gift_details/pledge_button.dart';
 import 'package:hediaty_sec/services/image_to_stringVV.dart';
@@ -34,7 +35,7 @@ class _GiftDetailsState extends State<GiftDetails> {
   Widget build(BuildContext context) {
     var giftImage;
     if (widget.myGift.imgURl != null && widget.myGift.imgURl != '') {
-      giftImage = ImageConverterr().stringToImage(widget.myGift.imgURl);
+      giftImage = ImageConverterr().stringToImage(widget.myGift.imgURl!);
     }
 
     return Scaffold(
@@ -44,7 +45,7 @@ class _GiftDetailsState extends State<GiftDetails> {
           widget.myGift.userID == UserManager().getUserId()
               ? IconButton(
             onPressed: () {
-              // Add your edit logic here
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>EditGift(EventID: widget.myGift.eventID, myGift:widget.myGift)));
             },
             icon: Icon(Icons.edit),
           )
