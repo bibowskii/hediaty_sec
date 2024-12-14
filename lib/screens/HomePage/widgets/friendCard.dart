@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hediaty_sec/models/data/users.dart';
 import 'package:hediaty_sec/services/image_to_stringVV.dart';
-import 'package:iconsax/iconsax.dart';
 
 class friendCard extends StatelessWidget {
   final User myUser;

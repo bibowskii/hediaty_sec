@@ -1,11 +1,11 @@
 // done and working perfectly
 
 import 'dart:convert';
-import 'dart:typed_data';
 import 'dart:io';
-import 'package:image_picker/image_picker.dart';
-import 'package:flutter/material.dart';
+import 'dart:typed_data';
+
 import 'package:image/image.dart' as img;
+import 'package:image_picker/image_picker.dart';
 
 class ImageConverterr {
   final ImagePicker _picker = ImagePicker();

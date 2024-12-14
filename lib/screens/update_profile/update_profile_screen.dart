@@ -1,14 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hediaty_sec/models/domain/users_methods.dart';
-import 'package:hediaty_sec/providers/is_logged_in_provider.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/services/auth_service.dart';
 import 'package:hediaty_sec/services/image_to_stringVV.dart';
 import 'package:hediaty_sec/widgets/textField.dart';
-import 'package:hediaty_sec/wrapper/wrapper.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/data/users.dart';

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/services/image_to_stringVV.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
 // until images logic is implemented

@@ -6,12 +6,10 @@ import 'package:hediaty_sec/providers/is_logged_in_provider.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/login/loginPage.dart';
 import 'package:hediaty_sec/screens/settings/settings.dart';
-import 'package:hediaty_sec/screens/signUP/sign_up_screen.dart';
 import 'package:hediaty_sec/screens/update_profile/update_profile_screen.dart';
 import 'package:hediaty_sec/services/image_to_stringVV.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:provider/provider.dart';
-import 'package:image_picker/image_picker.dart';
 
 class profileScreen extends StatefulWidget {
   profileScreen({super.key});

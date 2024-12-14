@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hediaty_sec/models/data/Gifts.dart';
 import 'package:hediaty_sec/models/domain/gift_methods.dart';
-import 'package:hediaty_sec/screens/pledged_gifts/my_gifts.dart';
 import 'package:hediaty_sec/services/image_to_stringVV.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:hediaty_sec/widgets/textField.dart';
