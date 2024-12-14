@@ -156,7 +156,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             .map(
                               (gift) => GestureDetector(
                                 child: GiftCard(
-                                    name: gift.name, PledgedBy: gift.pledgedBy),
+                                    name: gift.name, PledgedBy: gift.pledgedBy, id: gift.id,),
                                 onTap: () {
                                   Navigator.push(
                                     context,

@@ -43,7 +43,7 @@ class _PledgedGiftsScreenState extends State<PledgedGiftsScreen> {
                 .map(
                   (gift) => GestureDetector(
                 child: GiftCard(
-                    name: gift.name, PledgedBy: gift.pledgedBy, Status: gift.status,),
+                    name: gift.name, PledgedBy: gift.pledgedBy, Status: gift.status, id: gift.id,),
                 onTap: () {
                   Navigator.push(
                     context,

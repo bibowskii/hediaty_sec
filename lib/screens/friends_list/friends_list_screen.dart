@@ -58,9 +58,12 @@ class _FriendsListScreenState extends State<FriendsListScreen> {
                         profileImage = ImageConverterr().stringToImage(friend.imageURL!);
                       }
                       return ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage:profileImage!=null? MemoryImage(profileImage): AssetImage('lib/assets/icons/favicon.png'),
-                          radius: 30,
+                        leading: Hero(
+                          tag: friend.id,
+                          child: CircleAvatar(
+                            backgroundImage:profileImage!=null? MemoryImage(profileImage): AssetImage('lib/assets/icons/favicon.png'),
+                            radius: 30,
+                          ),
                         ),
                         title: Text(friend.name!),
                         subtitle: Text(friend.number!),

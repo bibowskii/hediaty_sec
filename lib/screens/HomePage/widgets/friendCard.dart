@@ -17,10 +17,13 @@ class friendCard extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          CircleAvatar(
-            backgroundColor: Colors.transparent,
-            backgroundImage:profileImage!=null? MemoryImage(profileImage): AssetImage('lib/assets/icons/favicon.png'),
-            radius: 70,
+          Hero(
+            tag: myUser.id,
+            child: CircleAvatar(
+              backgroundColor: Colors.transparent,
+              backgroundImage:profileImage!=null? MemoryImage(profileImage): AssetImage('lib/assets/icons/favicon.png'),
+              radius: 70,
+            ),
           ),
           Text(myUser.name!),
         ],

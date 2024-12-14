@@ -70,10 +70,13 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          backgroundImage:profileImage!=null? MemoryImage(profileImage): AssetImage('lib/assets/icons/favicon.png'),
-                          radius: 70,
+                        Hero(
+                          tag: widget.friend.id,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            backgroundImage:profileImage!=null? MemoryImage(profileImage): AssetImage('lib/assets/icons/favicon.png'),
+                            radius: 70,
+                          ),
                         ),
                         SizedBox(
                           width: 20,

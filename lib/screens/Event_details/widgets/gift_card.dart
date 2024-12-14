@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
+import 'package:hediaty_sec/services/image_to_stringVV.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
@@ -10,15 +11,20 @@ class GiftCard extends StatelessWidget {
   String? PledgedBy;
   final String? ImageURl;
   final bool? Status;
+  final String id;
   GiftCard(
       {super.key,
       required this.name,
       required this.PledgedBy,
       this.ImageURl,
-      this.Status});
+      this.Status, required this.id});
 
   @override
   Widget build(BuildContext context) {
+    var giftImage;
+    if (ImageURl != null && ImageURl != '') {
+      giftImage = ImageConverterr().stringToImage(ImageURl!);
+    }
     return Material(
       elevation: 5,
       shadowColor: const Color(0XFF000000),
@@ -35,8 +41,16 @@ class GiftCard extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                //temp till images are done
-                child: Icon(Iconsax.gift),
+                //color: CupertinoColors.activeBlue, was just used as a placeholder at first
+                width: 120,
+                height: 120,
+                child: Hero(
+                  tag: id,
+
+                  child: giftImage != null
+                      ? Image.memory(giftImage)
+                      : Image.asset('lib/assets/icons/logo.png'),
+                ),
               ),
               SizedBox(
                 height: 4,

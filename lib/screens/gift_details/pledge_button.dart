@@ -81,7 +81,7 @@ class _PledgeButtonState extends State<PledgeButton> {
         decoration: BoxDecoration(
           color: isPledged
               ? isPledgedByUser
-              ? CupertinoColors.activeBlue
+              ? CupertinoColors.activeGreen
               : CupertinoColors.activeGreen
               : CupertinoColors.inactiveGray,
           borderRadius: BorderRadius.circular(12),
