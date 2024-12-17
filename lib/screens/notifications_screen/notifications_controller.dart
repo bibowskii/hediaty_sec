@@ -7,36 +7,57 @@ import 'package:hediaty_sec/models/domain/users_methods.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 
 class NotificationsController {
+  static final NotificationsController instance = NotificationsController._internal();
 
-  static NotificationsController instance = NotificationsController();
+  NotificationsController._internal();
 
-  NotificationsController();
-  List<Map<String, dynamic>> notifications = <Map<String, dynamic>>[];
+  List<Map<String, dynamic>> notifications = [];
   List<User> followers = [];
+  List<User> pledgers = [];
+
   Future<List<User>> getNotifications() async {
-   var friendsMap= await Follow().getFollowers(UserManager().getUserId()!);
-    var followersList = friendsMap.map((map) => Friend.fromMap(map)).toList();
-    for (var follower in followersList) {
-      dynamic friendProfile = await userMethods().getUserByID(follower.UserID!);
-      friendProfile = User.fromMap(friendProfile);
-      followers.add(friendProfile);
+    try {
+      followers.clear();
+      var friendsMap = await Follow().getFollowers(UserManager().getUserId()!);
+      var followersList = friendsMap.map((map) => Friend.fromMap(map)).toList();
+
+      // Fetch all follower profiles in parallel
+      List<Future<User>> followerFutures = followersList.map((follower) async {
+        dynamic friendProfile = await userMethods().getUserByID(follower.UserID!);
+        return User.fromMap(friendProfile);
+      }).toList();
+
+      followers = await Future.wait(followerFutures);
+    } catch (e) {
+      // Handle error appropriately (log or return empty list)
+      print('Error fetching followers: $e');
     }
-return followers;
+
+    return followers;
   }
 
-  List <User> pledgers = [];
   Future<List<User>> getPledgers() async {
-    var userMap = await userMethods().getUserByID(UserManager().currentUserId!);
-    User myUser = User.fromMap(userMap!);
-    var giftMap = await giftMethods().getGifts(myUser);
-    var gifts = giftMap.map((map) => Gift.fromMap(map)).toList();
-    for (var gift in gifts) {
-      dynamic friendProfile = await userMethods().getUserByID(gift.pledgedBy!);
-      friendProfile = User.fromMap(friendProfile);
-      pledgers.add(friendProfile);
+    try {
+      pledgers.clear();
+      var userMap = await userMethods().getUserByID(UserManager().getUserId()!);
+      if (userMap == null) return [];
+
+      User myUser = User.fromMap(userMap);
+      var giftMap = await giftMethods().getGifts(myUser);
+      var gifts = giftMap.map((map) => Gift.fromMap(map)).toList();
+
+      // Fetch all pledger profiles in parallel
+      List<Future<User>> pledgerFutures = gifts.map((gift) async {
+        dynamic friendProfile = await userMethods().getUserByID(gift.pledgedBy!);
+        return User.fromMap(friendProfile);
+      }).toList();
+
+      pledgers = await Future.wait(pledgerFutures);
+    } catch (e) {
+      // Handle error appropriately (log or return empty list)
+      print('Error fetching pledgers: $e');
     }
+
     return pledgers;
   }
-
-
 }

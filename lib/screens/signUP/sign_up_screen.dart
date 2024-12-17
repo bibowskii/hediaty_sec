@@ -193,7 +193,7 @@ class _signUpScreenState extends State<SignUpScreen> {
                               await authService().signUp(email: emailController.text, password: passwordController.text);
                               await authService().signIn(email: emailController.text, password: passwordController.text);
                               String currentID =authService().currentUser!.uid;
-                              User myUser = new User(currentID, nameController.text, emailController.text, numberController.text, profileImage);
+                              User myUser = User(currentID, nameController.text, emailController.text, numberController.text, profileImage);
                               await userMethods().createUser(myUser);
                                 debugPrint('changing state');
                                 context.read<isLogged>().changeState();

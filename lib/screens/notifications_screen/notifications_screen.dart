@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/friend_profile/friend_Profile.dart';
 import 'package:hediaty_sec/screens/notifications_screen/notifications_controller.dart';
 import 'package:hediaty_sec/services/image_to_stringVV.dart';
-import 'package:provider/provider.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -14,117 +14,150 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
-  var Followers;
-  var pledgers;
+  List<dynamic> followers = [];
+  List<dynamic> pledgers = [];
   bool isLoading = true;
+
   @override
   void initState() {
     super.initState();
-    _initAsync();
+    _loadNotifications();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  Future<void> _loadNotifications() async {
+    try {
+      final controller = NotificationsController.instance;
+      final fetchedFollowers = await controller.getNotifications();
+      final fetchedPledgers = await controller.getPledgers();
+
+      setState(() {
+        followers = fetchedFollowers;
+        pledgers = fetchedPledgers;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() => isLoading = false);
+      _showErrorSnackBar('Failed to load notifications: $e');
+    }
   }
 
-  Future<void> _initAsync() async {
-    Followers = await NotificationsController().getNotifications();
-    pledgers = await NotificationsController().getPledgers();
-    setState(() {
-      isLoading = false;
-    });
+  void _showErrorSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
   }
 
   Future<void> _onRefresh() async {
-    Followers.clear();
-    setState(() {
-      isLoading = true;
-    });
-    await _initAsync();
+    setState(() => isLoading = true);
+    await _loadNotifications();
+  }
+
+  Widget _buildList({
+    required String title,
+    required List<dynamic> items,
+    required bool isFollower,
+  }) {
+    if (items.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: Center(
+          child: Text(
+            'No New $title',
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+          child: Text(
+            'New $title',
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+        ),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            final item = items[index];
+            final profileImage = item.imageURL?.isNotEmpty == true
+                ? ImageConverterr().stringToImage(item.imageURL!)
+                : null;
+
+            return ListTile(
+              leading: CircleAvatar(
+                backgroundImage: profileImage != null
+                    ? MemoryImage(profileImage)
+                    : const AssetImage('lib/assets/icons/favicon.png')
+                as ImageProvider,
+                radius: 30,
+              ),
+              title: Text(
+                isFollower
+                    ? '${item.name ?? "Someone"} just followed you!'
+                    : '${item.name ?? "Someone"} just pledged your gift!',
+                style: const TextStyle(fontSize: 16),
+              ),
+              subtitle: isFollower
+                  ? const Text('Check out their profile')
+                  : null,
+              onTap: isFollower
+                  ? () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        FriendDetailScreen(friend: item),
+                  ),
+                );
+              }
+                  : null,
+            );
+          },
+        ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = context.watch<theme>().dark;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Notifications'),
-        backgroundColor:
-            context.watch<theme>().dark ? Colors.black : Colors.white,
+        backgroundColor: isDarkMode ? Colors.black : Colors.white,
+        foregroundColor: isDarkMode ? Colors.white : Colors.black,
       ),
-      backgroundColor: context.watch<theme>().dark
+      backgroundColor: isDarkMode
           ? CupertinoColors.darkBackgroundGray
           : CupertinoColors.extraLightBackgroundGray,
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : Followers.isEmpty
-              ? Center(child: Text('No New Followers'))
-              : RefreshIndicator(
-                  onRefresh: _onRefresh,
-                  child: Column(
-                    children: [
-                      Text(
-                        'New Followers',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      ListView.builder(
-                        itemCount: Followers.length,
-                        itemBuilder: (context, index) {
-                          final friend = Followers[index];
-                          var profileImage;
-                          if (friend.imageURL != '') {
-                            profileImage = ImageConverterr()
-                                .stringToImage(friend.imageURL!);
-                          }
-                          return ListTile(
-                            leading: CircleAvatar(
-                              backgroundImage: profileImage != null
-                                  ? MemoryImage(profileImage)
-                                  : AssetImage('lib/assets/icons/favicon.png'),
-                              radius: 40,
-                            ),
-                            title: Text('${friend.name!} Just followed you!'),
-                            subtitle: const Text('Check their profile out'),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      FriendDetailScreen(friend: friend),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                      Text(
-                        'New Pledges',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      ListView.builder(
-                        itemCount: pledgers.length,
-                        itemBuilder: (context, index) {
-                          final pledger = pledgers[index];
-                          var profileImage;
-                          if (pledger.imageURL != '') {
-                            profileImage = ImageConverterr()
-                                .stringToImage(pledger.imageURL!);
-                          }
-                          return ListTile(
-                            leading: CircleAvatar(
-                              backgroundImage: profileImage != null
-                                  ? MemoryImage(profileImage)
-                                  : AssetImage('lib/assets/icons/favicon.png'),
-                              radius: 40,
-                            ),
-                            title:
-                                Text('${pledger.name!} Just pledged your Gift'),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+          ? const Center(child: CircularProgressIndicator())
+          : RefreshIndicator(
+        onRefresh: _onRefresh,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildList(
+                title: 'Followers',
+                items: followers,
+                isFollower: true,
+              ),
+              _buildList(
+                title: 'Pledges',
+                items: pledgers,
+                isFollower: false,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

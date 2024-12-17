@@ -6,6 +6,7 @@ import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/Event_details/event_details_screen.dart';
 import 'package:hediaty_sec/screens/friend_profile/friend_profile_controller.dart';
 import 'package:hediaty_sec/services/image_to_stringVV.dart';
+import 'package:hediaty_sec/services/unused/one_signal_service.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -139,12 +140,14 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
                       success = await Follow().removeFriend(myFriend);
                     } else {
                       success = await Follow().followFriend(myFriend);
+                      OneSignalServices().pushNotification(widget.friend.id, 'A new follower', '${widget.friend.name} just followed you!');
                     }
 
                     if (success) {
                       setState(() {
                         FriendProfileController.instance.isFriend =
                         !FriendProfileController.instance.isFriend;
+
                       });
                     } else {
 

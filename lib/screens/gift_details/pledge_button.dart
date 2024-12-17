@@ -48,7 +48,9 @@ class _PledgeButtonState extends State<PledgeButton> {
 
             final giftMethod = GiftDetailsController.instance.isPledged
                 ? giftMethods().unpledge  // Unpledge if already pledged
-                : giftMethods().pledge;   // Pledge if not pledged
+                : giftMethods().pledge; // Pledge if not pledged
+
+
 
 
             await giftMethod(widget.myGift);
@@ -88,8 +90,6 @@ class _PledgeButtonState extends State<PledgeButton> {
           boxShadow: [
             BoxShadow(
               color: CupertinoColors.systemGrey.withOpacity(0.5),
-             /* blurRadius: 4,
-              spreadRadius: 2,*/
             ),
           ],
         ),
