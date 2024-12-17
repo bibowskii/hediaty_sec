@@ -21,6 +21,7 @@ class _addEventScreenState extends State<addEventScreen> {
   TextEditingController eventDescriptionController = TextEditingController();
   TextEditingController eventLocationController = TextEditingController();
   TextEditingController eventTimeController = TextEditingController();
+  String? _selectedEventCategory;
 
   @override
   void dispose() {
@@ -33,6 +34,21 @@ class _addEventScreenState extends State<addEventScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> _eventCategories = [
+      'Conference',
+      'Workshop',
+      'Birthday Party',
+      'Wedding',
+      'Concert',
+      'Sports Event',
+      'Festival',
+    ];
+
+    // Selected category
+
+
+
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: context.watch<theme>().dark
@@ -77,6 +93,26 @@ class _addEventScreenState extends State<addEventScreen> {
                       isObsecure: false,
                       controller: eventLocationController,
                     ),
+                    SizedBox(height: 20,),
+
+                    DropdownButton<String>(
+                      value: _selectedEventCategory,
+                      hint: Text('Select an event category'),
+                      isExpanded: true, // Makes the dropdown fill the available width
+                      items: _eventCategories.map((String category) {
+                        return DropdownMenuItem<String>(
+                          value: category,
+                          child: Text(category),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedEventCategory = newValue;
+                        });
+                      },
+                    ),
+
+
                     SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () async {
@@ -86,9 +122,8 @@ class _addEventScreenState extends State<addEventScreen> {
                           _selectedDate,
                           Uuid().v1(),
                           eventLocationController.text,
-
-                            // user manager removed for testing methods, it works when u sign in from the beginning
                           UserManager().getUserId()!,
+                            _selectedEventCategory.toString(),
                         );
                         await eventMethods().createEvent(event);
                         SnackBar snackBar = SnackBar(

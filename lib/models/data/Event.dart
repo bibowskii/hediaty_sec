@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 class Event {
   String id; // primary key
@@ -7,8 +8,9 @@ class Event {
   String location;
   String description;
   DateTime date;
+  String? category;
 
-  Event(this.name, this.description, this.date, this.id, this.location, this.userID);
+  Event(this.name, this.description, this.date, this.id, this.location, this.userID, this.category);
 
   Map<String, dynamic> toMap() {
     return {
@@ -18,6 +20,8 @@ class Event {
       'location': location,
       'description': description,
       'date': date, // save as DateTime, can be converted to Timestamp in Firestore
+      'category': category,
+
     };
   }
 
@@ -31,5 +35,6 @@ class Event {
             ? (map['date'] as Timestamp).toDate()  // Convert Timestamp to DateTime
             : map['date'] is DateTime
             ? map['date'] // If it's already DateTime, use it directly
-            : DateTime.now(); // Default to current date if it's null or invalid
+            : DateTime.now(), // Default to current date if it's null or invalid
+        category = map['category'];
 }

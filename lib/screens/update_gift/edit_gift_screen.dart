@@ -15,7 +15,7 @@ class EditGift extends StatefulWidget {
   @override
   State<EditGift> createState() => _EditGiftState();
 }
-
+String? _selectedCategory;
 class _EditGiftState extends State<EditGift> {
   @override
   Widget build(BuildContext context) {
@@ -29,6 +29,16 @@ class _EditGiftState extends State<EditGift> {
     descriptionController.text = widget.myGift.description!;
     var GiftImage = ImageConverterr().stringToImage(widget.myGift.imgURl!);
     var selectedImage = widget.myGift.imgURl!;
+    final List<String> _giftCategories = [
+      'Electronics',
+      'Books',
+      'Clothing',
+      'Toys',
+      'Home & Kitchen',
+      'Sports & Outdoors',
+      'Other',
+    ];
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -93,11 +103,23 @@ class _EditGiftState extends State<EditGift> {
             SizedBox(
               height: 8,
             ),
-            CustomTextField(
-                hintText: 'category',
-                icon: Icons.category,
-                isObsecure: false,
-                controller: categoryController),
+
+            DropdownButton<String>(
+              value: _selectedCategory,
+              hint: Text('Select a category'),
+              isExpanded: true, // Makes the dropdown fill the available width
+              items: _giftCategories.map((String category) {
+                return DropdownMenuItem<String>(
+                  value: category,
+                  child: Text(category),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedCategory = newValue;
+                });
+              },
+            ),
             SizedBox(
               height: 8,
             ),

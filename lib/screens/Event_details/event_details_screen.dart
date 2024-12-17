@@ -126,6 +126,21 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       //fontWeight: FontWeight.bold,
                     ),
                   ),
+                  const Text(
+                    'Category:',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    widget.event.category!= null?
+                    '${widget.event.category}':'uncategorized',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      //fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ],
               ),
             ),

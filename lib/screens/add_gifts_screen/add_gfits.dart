@@ -14,7 +14,7 @@ class AddGfits extends StatefulWidget {
   @override
   State<AddGfits> createState() => _AddGfitsState();
 }
-
+String? _selectedCategory;
 class _AddGfitsState extends State<AddGfits> {
   @override
   Widget build(BuildContext context) {
@@ -24,6 +24,18 @@ class _AddGfitsState extends State<AddGfits> {
     TextEditingController categoryController = TextEditingController();
     var selectedImage = null;
     var GiftImage = null;
+    final List<String> _giftCategories = [
+      'Electronics',
+      'Books',
+      'Clothing',
+      'Toys',
+      'Home & Kitchen',
+      'Sports & Outdoors',
+      'Other',
+    ];
+
+
+
     return Scaffold(
 
       resizeToAvoidBottomInset: true,
@@ -64,10 +76,25 @@ class _AddGfitsState extends State<AddGfits> {
             SizedBox(height: 8,),
             CustomTextField(hintText: 'description', icon: Icons.description, isObsecure: false, controller: descriptionController),
             SizedBox(height: 8,),
-            CustomTextField(hintText: 'category', icon: Icons.category, isObsecure: false, controller: categoryController),
+            DropdownButton<String>(
+              value: _selectedCategory,
+              hint: Text('Select a category'),
+              isExpanded: true, // Makes the dropdown fill the available width
+              items: _giftCategories.map((String category) {
+                return DropdownMenuItem<String>(
+                  value: category,
+                  child: Text(category),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedCategory = newValue;
+                });
+              },
+            ),
             SizedBox(height: 8,),
             ElevatedButton(onPressed: ()async{
-              Gift myGift = Gift(Uuid().v1(), giftName.text, descriptionController.text, categoryController.text, false, double.tryParse(priceController.text)?? 0.0, widget.EventID, UserManager().getUserId()!,selectedImage, '');
+              Gift myGift = Gift(Uuid().v1(), giftName.text, descriptionController.text, _selectedCategory.toString(), false, double.tryParse(priceController.text)?? 0.0, widget.EventID, UserManager().getUserId()!,selectedImage, '');
               await giftMethods().createGift(myGift);
               Navigator.pop(context);
             }, child: Text('Add gift')),

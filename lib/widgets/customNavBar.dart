@@ -6,6 +6,7 @@ import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/HomePage/homePage.dart';
 import 'package:hediaty_sec/screens/event_list/event_list_screen.dart';
 import 'package:hediaty_sec/screens/friends_list/friends_list_screen.dart';
+import 'package:hediaty_sec/screens/notifications_screen/notifications_screen.dart';
 import 'package:hediaty_sec/screens/pledged_gifts/tab_bar.dart';
 import 'package:hediaty_sec/screens/profile/profile_screen.dart';
 import 'package:provider/provider.dart';
@@ -54,7 +55,9 @@ class _CustomNavBarState extends State<CustomNavBar> {
         centerTitle: true,
         shadowColor: Colors.black54,
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
+          IconButton(onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsScreen()));
+          }, icon: Icon(Icons.notifications)),
           IconButton(
             icon: Icon(context.watch<theme>().dark
                 ? Icons.wb_sunny

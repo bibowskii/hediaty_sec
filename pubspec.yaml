@@ -39,7 +39,7 @@ dependencies:
   iconsax: ^0.0.8
   curved_navigation_bar: ^1.0.6 #latest version
   #sqflite: ^2.2.0
-  path: ^1.8.3
+  path: ^1.9.0
   firebase_core: ^3.8.0
   firebase_auth: ^5.3.3
   provider: ^6.1.2
@@ -49,6 +49,14 @@ dependencies:
   image_picker: ^1.1.2
   flutter_image_converter: ^0.4.1
   uuid: ^4.5.1
+  firebase_messaging: ^15.1.6
+  onesignal_flutter: ^5.2.8
+  http: ^1.2.2
+  sqflite: ^2.4.1
+  path_provider: ^2.1.5
+  googleapis_auth: ^1.6.0
+  googleapis: ^13.2.0
+  #flutter_local_notifications: ^18.0.1
   #flutter_secure_storage: ^4.2.1
 
 
@@ -80,6 +88,7 @@ flutter:
   assets:
     - lib/assets/icons/
     - lib/assets/splashScreen/
+    - lib/keys/hediaty-5941a-944a3c0e0c91.json
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

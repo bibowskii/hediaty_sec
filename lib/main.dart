@@ -1,11 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hediaty_sec/keys/api_keys.dart';
 import 'package:hediaty_sec/providers/is_logged_in_provider.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/splash_screen/splash_screen.dart';
 import 'package:hediaty_sec/services/shared_prefs_service.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:hediaty_sec/wrapper/wrapper.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -13,6 +15,9 @@ void main() async {
   await SharedPrefs().init();
   await Firebase.initializeApp();
   await UserManager().loadUser();
+  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+  OneSignal.initialize(APIKeys().oneSignalAppId);
+  OneSignal.Notifications.requestPermission(true);
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => isLogged()),
