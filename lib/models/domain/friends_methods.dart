@@ -95,4 +95,15 @@ class Follow implements friendsRepo {
     return false;
    }
   }
+
+  Future<List<Map<String, dynamic>>> getFollowers(String UserID)async{
+    try{
+      List<Map<String, dynamic>> followers = await _firestoreService.getList(collections().friends, 'FriendID', UserID);
+      return followers;
+    }catch(e){
+      print('Error getting followers: ${e.toString()}');
+      return [];
+    }
+
+  }
 }

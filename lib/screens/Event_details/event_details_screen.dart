@@ -57,7 +57,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
         backgroundColor:
             context.watch<theme>().dark ? Colors.black : Colors.white,
         title: Text(widget.event.name),
-        actions: [
+        actions: [ widget.event.userID == UserManager().getUserId()?
           IconButton(
               onPressed: () {
                 Navigator.push(
@@ -67,8 +67,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               myEvent: widget.event,
                             )));
               },
-              icon: const Icon(Icons.edit)),
-        ],
+              icon: const Icon(Icons.edit)): Container()],
       ),
       body: Stack(
         children: [
