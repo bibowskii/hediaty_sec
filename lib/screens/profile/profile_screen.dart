@@ -235,7 +235,7 @@ class _profileScreenState extends State<profileScreen> {
                                             Navigator.pop(context);
                                             await userMethods().deleteUser(userData!);
                                             UserManager().clearUser();
-                                            context.read<isLogged>().changeState();
+                                            context.read<AccessTokenProvider>().clearAccessToken();
                                             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => loginPage()), (route) => false);
                                           },
                                           child: Text('Delete'),

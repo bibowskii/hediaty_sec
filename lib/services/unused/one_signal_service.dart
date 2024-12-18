@@ -68,11 +68,13 @@ class OneSignalServices {
   }
 
   // Save OneSignal Player ID for the current user
-  void saveOneSignalPlayerId(String playerId) async {
+  Future<void> saveOneSignalPlayerId(String playerId) async {
     Map<String, dynamic> myPlayerData = {'onesignal_player_id': playerId};
     await _db.collection(collections().UserFc).doc(userId).set(myPlayerData, SetOptions(merge: true));
   }
-  void getPlayerID() async {
+
+  Future<String> getPlayerID() async {
     var id = OneSignal.User.pushSubscription.id;
+    return id!;
   }
 }

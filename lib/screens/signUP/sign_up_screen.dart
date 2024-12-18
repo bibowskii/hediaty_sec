@@ -196,7 +196,12 @@ class _signUpScreenState extends State<SignUpScreen> {
                               User myUser = User(currentID, nameController.text, emailController.text, numberController.text, profileImage);
                               await userMethods().createUser(myUser);
                                 debugPrint('changing state');
-                                context.read<isLogged>().changeState();
+                              final accessToken = await authService()
+                                  .currentUser!
+                                  .getIdToken();
+                              context
+                                  .read<AccessTokenProvider>()
+                                  .setAccessToken(accessToken!);
                                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AuthWrapper()));
                                 debugPrint('state change');
                             }

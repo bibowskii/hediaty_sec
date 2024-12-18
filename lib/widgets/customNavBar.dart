@@ -43,7 +43,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
           onPressed: () {
             UserManager().clearUser();
             authService().signOut();
-            context.read<isLogged>().changeState();
+            context.read<AccessTokenProvider>().clearAccessToken();
           },
         ),
         title: const Text(

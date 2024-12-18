@@ -49,7 +49,7 @@ class _SettingsState extends State<Settings> {
               onTap: () {
                 UserManager().clearUser();
                 authService().signOut();
-                context.read<isLogged>().changeState();
+                context.read<AccessTokenProvider>().clearAccessToken();
               },
             ),
           ],

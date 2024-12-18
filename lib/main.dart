@@ -20,7 +20,7 @@ void main() async {
   OneSignal.Notifications.requestPermission(true);
 
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (context) => isLogged()),
+    ChangeNotifierProvider(create: (context) => AccessTokenProvider()),
     ChangeNotifierProvider(create: (context) => theme()),
   ], child: const MyApp()));
 }

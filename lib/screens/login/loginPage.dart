@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/signUP/sign_up_screen.dart';
+import 'package:hediaty_sec/services/unused/one_signal_service.dart';
 import 'package:hediaty_sec/widgets/customButton.dart';
 import 'package:hediaty_sec/widgets/textField.dart';
 import 'package:iconsax/iconsax.dart';
@@ -180,7 +181,10 @@ class _loginPageState extends State<loginPage> {
                             password: passwordController.text,
                           );
                           UserManager().setUserId(FirebaseAuth.instance.currentUser!.uid);
-                          context.read<isLogged>().changeState();
+                          var signalid = await OneSignalServices().getPlayerID();
+                          await OneSignalServices().saveOneSignalPlayerId(signalid);
+                          final accessToken = await FirebaseAuth.instance.currentUser!.getIdToken();
+                          context.read<AccessTokenProvider>().setAccessToken(accessToken!);
                         } on FirebaseAuthException catch (e) {
                           setState(() {
                             switch (e.code) {
