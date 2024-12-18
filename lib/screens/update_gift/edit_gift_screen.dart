@@ -136,7 +136,7 @@ class _EditGiftState extends State<EditGift> {
                       UserManager().getUserId()!,
                       selectedImage,
                       '');
-                  await giftMethods().createGift(myGift);
+                  await giftMethods().editGift(myGift);
                   Navigator.pop(context);
                 },
                 child: Text('Edit gift')),
