@@ -17,9 +17,9 @@ class EventListScreen extends StatefulWidget {
 
 class _EventListScreenState extends State<EventListScreen> {
   bool isLoading = true;
-  String selectedCategory = 'All'; // Default to 'All' category
+  String selectedCategory = 'All';
   List<String> categories = [
-    'All', // Option to show all events
+    'All',
     'Conference',
     'Workshop',
     'Birthday Party',
@@ -37,7 +37,7 @@ class _EventListScreenState extends State<EventListScreen> {
 
   // Fetch events
   Future<void> _fetchEvents() async {
-    await EventListController.instance.getEventList();  // Fetch events from remote or local DB
+    await EventListController.instance.getEventList();
     setState(() {
       isLoading = false;
     });
@@ -51,7 +51,7 @@ class _EventListScreenState extends State<EventListScreen> {
     await _fetchEvents();
   }
 
-  // Filter events based on category
+
   List<Event> _filterEvents(List<Event> events) {
     if (selectedCategory == 'All') {
       return events;
@@ -60,7 +60,7 @@ class _EventListScreenState extends State<EventListScreen> {
     }
   }
 
-  // Show drafts in a bottom sheet
+
   void _showDraftsBottomSheet() async {
     final draftEvents = await DraftEventListController.instance.fetchLocalDraftEvents();
 
