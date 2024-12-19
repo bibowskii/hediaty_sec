@@ -9,7 +9,7 @@ class UserMethodsSqflite implements users_repo {
   @override
   Future<void> createUser(User myUser) async {
     try {
-      await _dbService.insert(collections().user, {'id': myUser.id, 'number': myUser.number, 'email': myUser.email});
+      await _dbService.insert(collections().user, {'id': myUser.id, 'number': myUser.number, 'email': myUser.email, 'name': myUser.name});
       print('User created successfully');
     } catch (e) {
       print(e.toString());

@@ -2,12 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hediaty_sec/models/data/Event.dart';
 import 'package:hediaty_sec/models/domain/event_methods.dart';
+import 'package:hediaty_sec/models/local_db/db_helper.dart';
+import 'package:hediaty_sec/models/local_db/event_local_db.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/Event_details/event_details_screen.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:hediaty_sec/widgets/textField.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../models/data/collections.dart';
 
 class addEventScreen extends StatefulWidget {
   const addEventScreen({super.key});
@@ -135,6 +139,25 @@ class _addEventScreenState extends State<addEventScreen> {
                         // Navigate to event page details later
                       },
                       child: Text('Add Event'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        Event event = Event(
+                          eventNameController.text,
+                          eventDescriptionController.text,
+                          _selectedDate,
+                          Uuid().v1(),
+                          eventLocationController.text,
+                          UserManager().getUserId()!,
+                          _selectedEventCategory.toString(),
+                        );
+                        await EventMethodsLocal().createEvent(event);
+                        SnackBar snackBar = SnackBar(
+                          content: Text('Event Saved Successfully!'),
+                          backgroundColor: Colors.green,
+                        );
+                      },
+                      child: Text('Save Event as a draft'),
                     ),
                   ],
                 ),

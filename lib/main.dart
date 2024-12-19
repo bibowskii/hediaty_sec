@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hediaty_sec/keys/api_keys.dart';
+import 'package:hediaty_sec/models/local_db/db_helper.dart';
 import 'package:hediaty_sec/providers/is_logged_in_provider.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/splash_screen/splash_screen.dart';
@@ -18,6 +19,7 @@ void main() async {
   OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
   OneSignal.initialize(APIKeys().oneSignalAppId);
   OneSignal.Notifications.requestPermission(true);
+  SQLiteService().database;
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => AccessTokenProvider()),

@@ -45,7 +45,7 @@ class Gift {
     );
   }
 
- /* factory Gift.fromMapSQLite(Map<String, dynamic> map) {
+/*  factory Gift.fromMapSQLite(Map<String, dynamic> map) {
     return Gift(
       map['id'] ?? '',
       map['name'] ?? '',

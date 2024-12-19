@@ -37,4 +37,30 @@ class Event {
             ? map['date'] // If it's already DateTime, use it directly
             : DateTime.now(), // Default to current date if it's null or invalid
         category = map['category'];
+
+
+
+Map<String, dynamic> toMapSQLite() {
+  return {
+    'id': id,
+    'UserID': userID,
+    'name': name,
+    'location': location,
+    'description': description,
+    'date': date.toIso8601String(), // Convert DateTime to ISO8601 String
+    'category': category,
+  };
+}
+
+Event.fromMapSQLite(Map<String, dynamic> map)
+    : id = map['id'] ?? '',
+      userID = map['UserID'] ?? '',
+      name = map['name'] ?? '',
+      location = map['location'] ?? '',
+      description = map['description'] ?? '',
+      date = map['date'] != null
+          ? DateTime.parse(map['date']) // Parse ISO8601 String to DateTime
+          : DateTime.now(),
+      category = map['category'];
+
 }

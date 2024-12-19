@@ -12,7 +12,8 @@ class GiftDetails extends StatefulWidget {
   final Gift myGift;
   final String? eventName;
 
-  const GiftDetails({Key? key, required this.myGift, this.eventName}) : super(key: key);
+  const GiftDetails({Key? key, required this.myGift, this.eventName})
+      : super(key: key);
 
   @override
   State<GiftDetails> createState() => _GiftDetailsState();
@@ -30,8 +31,10 @@ class _GiftDetailsState extends State<GiftDetails> {
 
   Future<void> _initGiftDetails() async {
     try {
-      isPledged = await GiftDetailsController.instance.checkIfPledged(widget.myGift);
-      isPledgedByUser = await GiftDetailsController.instance.checkIfPledgedByUser(widget.myGift);
+      isPledged =
+          await GiftDetailsController.instance.checkIfPledged(widget.myGift);
+      isPledgedByUser = await GiftDetailsController.instance
+          .checkIfPledgedByUser(widget.myGift);
     } catch (error) {
       debugPrint("Error initializing gift details: $error");
     }
@@ -76,29 +79,32 @@ class _GiftDetailsState extends State<GiftDetails> {
     return AppBar(
       backgroundColor: Colors.transparent,
       actions: [
-        if (isGiftOwner)
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => EditGift(
-                    EventID: widget.myGift.eventID,
-                    myGift: widget.myGift,
+        if (widget.myGift.pledgedBy == null ||
+            widget.myGift.pledgedBy == '') ...[
+          if (isGiftOwner)
+            IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditGift(
+                      EventID: widget.myGift.eventID,
+                      myGift: widget.myGift,
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
-        if (isGiftOwner)
-          IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () {
-              giftMethods().deleteGift(widget.myGift);
-              Navigator.pop(context);
-            },
-          ),
+                );
+              },
+            ),
+          if (isGiftOwner)
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () {
+                giftMethods().deleteGift(widget.myGift);
+                Navigator.pop(context);
+              },
+            ),
+        ],
       ],
     );
   }
@@ -166,9 +172,10 @@ class _GiftDetailsState extends State<GiftDetails> {
         child: PledgeButton(myGift: widget.myGift),
         onTap: () async {
           setState(() {
-            widget.myGift.pledgedBy = widget.myGift.pledgedBy == null || widget.myGift.pledgedBy == ''
-                ? UserManager().getUserId()
-                : '';
+            widget.myGift.pledgedBy =
+                widget.myGift.pledgedBy == null || widget.myGift.pledgedBy == ''
+                    ? UserManager().getUserId()
+                    : '';
           });
           await _refreshGiftDetails();
         },
@@ -219,6 +226,6 @@ class _GiftDetailsState extends State<GiftDetails> {
     if (widget.myGift.pledgedBy == null || widget.myGift.pledgedBy == '') {
       return CupertinoColors.inactiveGray;
     }
-    return  widget.myGift.status == false ? Colors.green : Colors.red;
+    return widget.myGift.status == false ? Colors.green : Colors.red;
   }
 }

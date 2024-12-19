@@ -25,6 +25,7 @@ class SQLiteService {
   }
 
   Future<void> _createTables(Database db, int version) async {
+
     // Users table
     await db.execute('''
       CREATE TABLE ${collections().user} (
@@ -37,18 +38,21 @@ class SQLiteService {
     );
 
     // Events table
+    await db.execute('PRAGMA foreign_keys = ON;');  // Enable foreign key constraints
+
     await db.execute('''
-      CREATE TABLE ${collections().event} (
-        id TEXT PRIMARY KEY,
-        name TEXT NOT NULL,
-        date TEXT NOT NULL,
-        location TEXT,
-        description TEXT,
-        user_id TEXT,
-        FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE
-      )
-    '''
-    );
+  CREATE TABLE ${collections().event} (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    date TEXT NOT NULL,
+    location TEXT,
+    description TEXT,
+    UserID TEXT,
+    category TEXT
+  )
+''');
+
+
 
     // Gifts table
     await db.execute('''
@@ -147,5 +151,14 @@ class SQLiteService {
   Future<void> closeDatabase() async {
     final db = await database;
     await db.close();
+  }
+
+
+  Future<void> deleteTable(String tableName) async {
+    // Get a reference to the database
+    final Database db = await database;
+
+    // Delete the table
+    await db.execute('DROP TABLE IF EXISTS $tableName');
   }
 }
