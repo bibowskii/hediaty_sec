@@ -48,6 +48,7 @@ class _myGiftsState extends State<myGifts> {
                     PledgedBy: gift.pledgedBy,
                     Status: gift.status,
                     id: gift.id,
+                    ImageURl: gift.imgURl,
                   ),
                   onTap: () {
                     Navigator.push(

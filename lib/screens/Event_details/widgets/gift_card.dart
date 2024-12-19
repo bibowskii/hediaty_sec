@@ -22,6 +22,7 @@ class GiftCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var giftImage;
     if (ImageURl != null && ImageURl != '') {
+      debugPrint('converting image');
       giftImage = ImageConverterr().stringToImage(ImageURl!);
     }
     return Material(

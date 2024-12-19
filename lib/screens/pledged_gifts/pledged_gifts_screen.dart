@@ -80,6 +80,7 @@ class _PledgedGiftsScreenState extends State<PledgedGiftsScreen> {
                     PledgedBy: gift.pledgedBy,
                     Status: gift.status,
                     id: gift.id,
+                    ImageURl: gift.imgURl,
                   ),
                   onTap: () {
                     Navigator.push(

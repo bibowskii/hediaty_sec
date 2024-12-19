@@ -188,6 +188,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                   name: gift.name,
                                   PledgedBy: gift.pledgedBy,
                                   id: gift.id,
+                                  ImageURl: gift.imgURl,
                                 ),
                                 onTap: () {
                                   Navigator.push(
