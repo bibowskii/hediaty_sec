@@ -89,7 +89,7 @@ class Follow implements friendsRepo {
   Future<bool> isFriend(String myUserID, String friendID) async {
    try{
     bool isFriend = await _firestoreService.checkIfDocExistsWith2Attributes(collections().friends, 'UserID', myUserID, 'FriendID', friendID);
-    return true;
+    return isFriend;
    }catch(e){
     print('Error checking if friend: ${e.toString()}');
     return false;

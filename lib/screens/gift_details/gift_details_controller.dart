@@ -10,6 +10,7 @@ class GiftDetailsController{
 
   bool isPledged= false;
   bool isPledgedByUser = false;
+  /*late Gift G;*/
 
 
   Future<bool> checkIfPledged(Gift myGift)async {

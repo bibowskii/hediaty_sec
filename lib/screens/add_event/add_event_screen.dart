@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hediaty_sec/models/data/Event.dart';
 import 'package:hediaty_sec/models/domain/event_methods.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
+import 'package:hediaty_sec/screens/Event_details/event_details_screen.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:hediaty_sec/widgets/textField.dart';
 import 'package:provider/provider.dart';
@@ -130,6 +131,7 @@ class _addEventScreenState extends State<addEventScreen> {
                           content: Text('Event Created Successfully!'),
                           backgroundColor: Colors.green,
                         );
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetailsScreen(event: event)));
                         // Navigate to event page details later
                       },
                       child: Text('Add Event'),

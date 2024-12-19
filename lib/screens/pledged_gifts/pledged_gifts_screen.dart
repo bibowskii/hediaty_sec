@@ -26,6 +26,7 @@ class _PledgedGiftsScreenState extends State<PledgedGiftsScreen> {
     setState(() {});
   }
 
+  @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: _fetchGifts,
@@ -35,30 +36,37 @@ class _PledgedGiftsScreenState extends State<PledgedGiftsScreen> {
             : CupertinoColors.extraLightBackgroundGray,
         body: Padding(
           padding: const EdgeInsets.all(16),
-          child: Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            //temp till is pledged and images are done
-            children: PledgdGiftsScreenController.instance.pledgedGifts
-                .map(
-                  (gift) => GestureDetector(
-                child: GiftCard(
-                    name: gift.name, PledgedBy: gift.pledgedBy, Status: gift.status, id: gift.id,),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          GiftDetails(myGift: gift,),
-                    ),
-                  );
-                },
-              ),
-            )
-                .toList(),
+          child: SingleChildScrollView( // Make the content scrollable
+            child: Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: PledgdGiftsScreenController.instance.pledgedGifts
+                  .map(
+                    (gift) => GestureDetector(
+                  child: GiftCard(
+                    name: gift.name,
+                    PledgedBy: gift.pledgedBy,
+                    Status: gift.status,
+                    id: gift.id,
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GiftDetails(myGift: gift),
+                      ),
+                    ).then((value) {
+                      setState(() {
+                        _fetchGifts();
+                      });
+                    });
+                  },
+                ),
+              )
+                  .toList(),
+            ),
           ),
         ),
-
       ),
     );
   }

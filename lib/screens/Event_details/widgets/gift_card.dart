@@ -61,20 +61,10 @@ class GiftCard extends StatelessWidget {
               Row(
                 children: [
                   Text("Status: "),
-                  PledgedBy != ''
-                      ? Status != false || Status !=''
-                          ? CircleAvatar(
-                              backgroundColor: Colors.green,
-                              radius: 5
-                            )
-                          : CircleAvatar(
-                              backgroundColor: Colors.red,
-                              radius: 5
-                            )
-                      : CircleAvatar(
-                          backgroundColor: CupertinoColors.inactiveGray,
-                          radius: 5
-                        ),
+                  CircleAvatar(
+                    backgroundColor: _getStatusColor(),
+                    radius: 5,
+                  ),
                 ],
               )
             ],
@@ -82,5 +72,11 @@ class GiftCard extends StatelessWidget {
         ),
       ),
     );
+  }
+  Color _getStatusColor() {
+    if (PledgedBy == null || PledgedBy == '') {
+      return CupertinoColors.inactiveGray;
+    }
+    return  Status == false ? Colors.green : Colors.red;
   }
 }

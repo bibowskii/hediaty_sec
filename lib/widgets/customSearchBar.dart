@@ -38,7 +38,9 @@ class _customSearchBarState extends State<customSearchBar> {
               MaterialPageRoute(
                 builder: (context) => FriendDetailScreen(friend: myUser),
               ),
-            );
+            ).then((value){setState(() {
+
+            });});
           } else {
             setState(() {
               widget.onEmptyQuery();

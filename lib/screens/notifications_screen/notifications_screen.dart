@@ -137,25 +137,27 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       backgroundColor: isDarkMode
           ? CupertinoColors.darkBackgroundGray
           : CupertinoColors.extraLightBackgroundGray,
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : RefreshIndicator(
+      body: RefreshIndicator(
         onRefresh: _onRefresh,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              _buildList(
-                title: 'Followers',
-                items: followers,
-                isFollower: true,
-              ),
-              _buildList(
-                title: 'Pledges',
-                items: pledgers,
-                isFollower: false,
-              ),
-            ],
-          ),
+        child: ListView(
+          children: [
+            isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : Column(
+              children: [
+                _buildList(
+                  title: 'Followers',
+                  items: followers,
+                  isFollower: true,
+                ),
+                _buildList(
+                  title: 'Pledges',
+                  items: pledgers,
+                  isFollower: false,
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

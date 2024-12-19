@@ -44,4 +44,19 @@ class Gift {
       map['pledgedBy']??'',
     );
   }
+
+ /* factory Gift.fromMapSQLite(Map<String, dynamic> map) {
+    return Gift(
+      map['id'] ?? '',
+      map['name'] ?? '',
+      map['description'] ?? '',
+      map['category'] ?? '',
+      map['status'] ?? false,
+      map['price'] ?? 0.0,
+      map['eventID'] ?? '',
+      map['userID'] ?? '',
+    );
+  }*/
+  Map<String, dynamic> toMapSQLite() => toMap()..remove('pledgedBy')..remove('imgURl'); // Remove pledgedBy field from the map>
+
 }

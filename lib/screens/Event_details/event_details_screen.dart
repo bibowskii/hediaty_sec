@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hediaty_sec/models/data/Event.dart';
+import 'package:hediaty_sec/models/domain/event_methods.dart';
+import 'package:hediaty_sec/models/domain/gift_methods.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/Event_details/edit_event_screen.dart';
 import 'package:hediaty_sec/screens/Event_details/event_details_controller.dart';
@@ -57,17 +59,29 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
         backgroundColor:
             context.watch<theme>().dark ? Colors.black : Colors.white,
         title: Text(widget.event.name),
-        actions: [ widget.event.userID == UserManager().getUserId()?
-          IconButton(
+        actions: [
+          widget.event.userID == UserManager().getUserId()
+              ? IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditEventScreen(
+                                  myEvent: widget.event,
+                                )));
+                  },
+                  icon: const Icon(Icons.edit))
+              : Container(),
+          widget.event.userID == UserManager().getUserId()
+              ? IconButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => EditEventScreen(
-                              myEvent: widget.event,
-                            )));
+                giftMethods().deleteALLGiftsByEventID(widget.event.id);
+                eventMethods().deleteEvent(widget.event);
+                Navigator.pop(context);
               },
-              icon: const Icon(Icons.edit)): Container()],
+              icon: const Icon(Icons.delete))
+              : Container()
+        ],
       ),
       body: Stack(
         children: [
@@ -133,8 +147,9 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     ),
                   ),
                   Text(
-                    widget.event.category!= null?
-                    '${widget.event.category}':'uncategorized',
+                    widget.event.category != null
+                        ? '${widget.event.category}'
+                        : 'uncategorized',
                     style: const TextStyle(
                       fontSize: 20,
                       //fontWeight: FontWeight.bold,
@@ -170,7 +185,10 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             .map(
                               (gift) => GestureDetector(
                                 child: GiftCard(
-                                    name: gift.name, PledgedBy: gift.pledgedBy, id: gift.id,),
+                                  name: gift.name,
+                                  PledgedBy: gift.pledgedBy,
+                                  id: gift.id,
+                                ),
                                 onTap: () {
                                   Navigator.push(
                                     context,
@@ -180,7 +198,9 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                         eventName: widget.event.name,
                                       ),
                                     ),
-                                  );
+                                  ).then((value) {
+                                    setState(() {});
+                                  });
                                 },
                               ),
                             )

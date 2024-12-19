@@ -7,7 +7,7 @@ import 'package:hediaty_sec/services/user_manager.dart';
 
 
 class PledgeButton extends StatefulWidget {
-  final Gift myGift;
+   final Gift myGift;
 
   PledgeButton({required this.myGift});
 
@@ -55,7 +55,7 @@ class _PledgeButtonState extends State<PledgeButton> {
 
             await giftMethod(widget.myGift);
             GiftDetailsController.instance.isPledged = !GiftDetailsController.instance.isPledged;
-            GiftDetailsController.instance.isPledgedByUser = GiftDetailsController.instance.isPledgedByUser ? false : true;
+            GiftDetailsController.instance.isPledgedByUser = GiftDetailsController.instance.isPledgedByUser;
 
 
             ScaffoldMessenger.of(context).showSnackBar(

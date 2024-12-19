@@ -5,6 +5,7 @@ import 'package:hediaty_sec/providers/is_logged_in_provider.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/services/auth_service.dart';
 import 'package:hediaty_sec/services/image_to_stringVV.dart';
+import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:hediaty_sec/widgets/textField.dart';
 import 'package:hediaty_sec/wrapper/wrapper.dart';
 import 'package:iconsax/iconsax.dart';
@@ -164,13 +165,13 @@ class _signUpScreenState extends State<SignUpScreen> {
                       icon: Iconsax.mobile,
                     ),
                     const SizedBox(height: 20),
-                    const Text(
+                   /* const Text(
                       'Enter Your Password',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
-                    ),
+                    ),*/
                     CustomTextField(
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -193,6 +194,7 @@ class _signUpScreenState extends State<SignUpScreen> {
                               await authService().signUp(email: emailController.text, password: passwordController.text);
                               await authService().signIn(email: emailController.text, password: passwordController.text);
                               String currentID =authService().currentUser!.uid;
+                              UserManager().setUserId(currentID);
                               User myUser = User(currentID, nameController.text, emailController.text, numberController.text, profileImage);
                               await userMethods().createUser(myUser);
                                 debugPrint('changing state');

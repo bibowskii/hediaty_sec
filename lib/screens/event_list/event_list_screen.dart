@@ -44,32 +44,34 @@ class _EventListScreenState extends State<EventListScreen> {
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : events.isEmpty
-              ? Center(child: Text('No events found'))
-              : RefreshIndicator(
-                  onRefresh: _onRefresh,
-                  child: ListView.builder(
-                    itemCount: events.length,
-                    itemBuilder: (context, index) {
-                      final event = events[index];
-                      return ListTile(
-                        leading: CircleAvatar(
-                          child: Icon(CupertinoIcons.gift),
-                        ),
-                        title: Text(event.name!),
-                        subtitle: Text(event.date!.toString()),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  EventDetailsScreen(event: event),
-                            ),
-                          );
-                        },
-                      );
-                    },
+          ? Center(child: Text('No events found'))
+          : RefreshIndicator(
+        onRefresh: _onRefresh,
+        child: ListView.builder(
+          itemCount: events.length,
+          itemBuilder: (context, index) {
+            final event = events[index];
+            return ListTile(
+              leading: CircleAvatar(
+                child: Icon(CupertinoIcons.gift),
+              ),
+              title: Text(event.name!),
+              subtitle: Text(event.date!.toString()),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        EventDetailsScreen(event: event),
                   ),
-                ),
+                ).then((onValue) {
+                  setState(() {});
+                });
+              },
+            );
+          },
+        ),
+      ),
     );
   }
 }

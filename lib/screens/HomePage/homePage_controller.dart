@@ -36,11 +36,11 @@ class HomePageController {
 
       for (var event in events) {
         Event curEvent = Event.fromMap(event);
-//remove comment later when done with the ui
+        //remove comment later when done with the ui
         if (curEvent.date.month == currentMonth &&
             curEvent.date.year == currentYear /*&& curEvent.date.isAfter(DateTime.now())*/) {
           monthEvents.add(event);
-        } else if (curEvent.date.year == currentYear) {
+        } else if (curEvent.date.year == currentYear /*&& curEvent.date.isAfter(DateTime.now())*/) {
           yearEvents.add(event);
         } else if (curEvent.date.year > currentYear) {
           nextYearEvents.add(event);
@@ -51,13 +51,16 @@ class HomePageController {
 
   Future<void> filterFriends() async {
     userMethods userF = userMethods();
-
+    //Set<User> fmonth={};
     for (var event in monthEvents) {
       Event curEvent = Event.fromMap(event);
       var user = await userF.getUserByID(curEvent.userID);
+      /*fmonth.add(User.fromMap(user!));
+      friendsThisMonth = fmonth.toList();*/
 
       monthEventsFriends.add(user!);
       friendsThisMonth = monthEventsFriends.map((map) => User.fromMap(map)).toSet().toList();
+
     }
 
     for (var event in yearEvents) {

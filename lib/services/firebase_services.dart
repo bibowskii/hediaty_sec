@@ -6,7 +6,8 @@ class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // Get document ID based on attribute
-  Future<String?> getDocID(String collection, String attribute, String value) async {
+  Future<String?> getDocID(String collection, String attribute,
+      String value) async {
     try {
       QuerySnapshot querySnapshot = await _db
           .collection(collection)
@@ -48,7 +49,8 @@ class FirestoreService {
   }
 
   // Query to get a list of documents based on a specific attribute and value
-  Future<List<Map<String, dynamic>>> getList(String collection, String attribute, String value) async {
+  Future<List<Map<String, dynamic>>> getList(String collection,
+      String attribute, String value) async {
     List<Map<String, dynamic>> documents = [];
 
     try {
@@ -68,7 +70,8 @@ class FirestoreService {
   }
 
   // Query to get a document based on a specific attribute and value (e.g., userId)
-  Future<Map<String, dynamic>?> getDocumentByAttribute(String collection, String attribute, String value) async {
+  Future<Map<String, dynamic>?> getDocumentByAttribute(String collection,
+      String attribute, String value) async {
     try {
       QuerySnapshot querySnapshot = await _db
           .collection(collection)
@@ -88,9 +91,12 @@ class FirestoreService {
   }
 
   // Get document by docID
-  Future<Map<String, dynamic>?> getDocument(String collection, String documentId) async {
+  Future<Map<String, dynamic>?> getDocument(String collection,
+      String documentId) async {
     try {
-      DocumentSnapshot doc = await _db.collection(collection).doc(documentId).get();
+      DocumentSnapshot doc = await _db.collection(collection)
+          .doc(documentId)
+          .get();
       return doc.exists ? doc.data() as Map<String, dynamic> : null;
     } catch (e) {
       print("Error getting document: $e");
@@ -99,7 +105,8 @@ class FirestoreService {
   }
 
   // Update data in a document by its ID
-  Future<void> updateData(String collection, String documentId, Map<String, dynamic> data) async {
+  Future<void> updateData(String collection, String documentId,
+      Map<String, dynamic> data) async {
     try {
       await _db.collection(collection).doc(documentId).update(data);
     } catch (e) {
@@ -115,49 +122,74 @@ class FirestoreService {
       print("Error deleting data: $e");
     }
   }
+
   // update single att
 
-Future<void> updateSingelAtt(String collection, String documentID, String att, String Value)async{
-    try{
+  Future<void> updateSingelAtt(String collection, String documentID, String att,
+      String Value) async {
+    try {
       await _db.collection(collection).doc(documentID).update({att: Value});
-    }catch(e){
+    } catch (e) {
       print(e.toString());
-  }
-
-  // codeium is fun
-  // Check if a document with 2 attributes exists
-
-
-
-}
-
-  Future<bool> checkIfDocExistsWith2Attributes(String collection, String attribute1, String value1, String attribute2, String value2) async {
-    try {
-      QuerySnapshot snapshot = await _db
-          .collection(collection)
-          .where(attribute1, isEqualTo: value1)
-          .where(attribute2, isEqualTo: value2)
-          .get();
-      return true;
-    } catch (e) {
-      print("Error checking if document exists: $e");
-      return false;
     }
   }
 
-  // Delete a document by 2 attributes
-  Future<void> deleteDocWith2Attributes(String collection, String attribute1, String value1, String attribute2, String value2) async {
-    try {
-      QuerySnapshot snapshot = await _db
-          .collection(collection)
-          .where(attribute1, isEqualTo: value1)
-          .where(attribute2, isEqualTo: value2)
-          .get();
-      if (snapshot.docs.isNotEmpty) {
-        await snapshot.docs.first.reference.delete();
+    Future<void> updatebool(String collection, String documentID, String att,
+        bool Value) async {
+      try {
+        await _db.collection(collection).doc(documentID).update({att: Value});
+      } catch (e) {
+        print(e.toString());
       }
-    } catch (e) {
-      print("Error deleting document by 2 attributes: $e");
+    }
+
+    Future<bool> checkIfDocExistsWith2Attributes(String collection,
+        String attribute1, String value1, String attribute2,
+        String value2) async {
+      try {
+        QuerySnapshot snapshot = await _db
+            .collection(collection)
+            .where(attribute1, isEqualTo: value1)
+            .where(attribute2, isEqualTo: value2)
+            .get();
+        if (snapshot.docs.isNotEmpty) {
+          return true;
+        }
+        return false;
+      } catch (e) {
+        print("Error checking if document exists: $e");
+        return false;
+      }
+    }
+
+    // Delete a document by 2 attributes
+    Future<void> deleteDocWith2Attributes(String collection, String attribute1,
+        String value1, String attribute2, String value2) async {
+      try {
+        QuerySnapshot snapshot = await _db
+            .collection(collection)
+            .where(attribute1, isEqualTo: value1)
+            .where(attribute2, isEqualTo: value2)
+            .get();
+        if (snapshot.docs.isNotEmpty) {
+          await snapshot.docs.first.reference.delete();
+        }
+      } catch (e) {
+        print("Error deleting document by 2 attributes: $e");
+      }
+    }
+
+    deleteAllData(String collection, String att, String value) async {
+      try {
+        await _db.collection(collection).where(att, isEqualTo: value)
+            .get()
+            .then((querySnapshot) {
+          for (var doc in querySnapshot.docs) {
+            doc.reference.delete();
+          }
+        });
+      } catch (e) {
+        print(e.toString());
+      }
     }
   }
-}

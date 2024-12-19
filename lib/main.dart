@@ -47,7 +47,14 @@ class MyApp extends StatelessWidget {
         '/': (context) => SplashScreen(),
         '/home': (context) => AuthWrapper(),
       },
-       // home: AuthWrapper() //const AuthWrapper(),
+      builder: (context, child) {
+        return MediaQuery.withClampedTextScaling(
+          child: child!,
+          minScaleFactor: 0.7, // Minimum scale factor
+          maxScaleFactor: 1.0, // Maximum scale factor
+        );
+
+      },
         );
   }
 }

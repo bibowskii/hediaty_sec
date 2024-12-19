@@ -5,7 +5,7 @@ class User {
   String? number;
   String? imageURL;
 
-  User(this.id, this.name, this.email, this.number, this.imageURL,);
+  User(this.id, this.name, this.email, this.number, this.imageURL);
 
   Map<String, dynamic> toMap() {
     return {
@@ -23,5 +23,15 @@ class User {
         email = map['email'] ?? '',
         number = map['number'] ?? '',
         imageURL = map['imageURL'] ?? '';
-}
 
+  // Override == to compare Users by their id
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is User && other.id == id;
+  }
+
+
+  @override
+  int get hashCode => id.hashCode;
+}

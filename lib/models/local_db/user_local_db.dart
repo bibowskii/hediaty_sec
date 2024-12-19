@@ -9,7 +9,7 @@ class UserMethodsSqflite implements users_repo {
   @override
   Future<void> createUser(User myUser) async {
     try {
-      await _dbService.insert(collections().user, myUser.toMap());
+      await _dbService.insert(collections().user, {'id': myUser.id, 'number': myUser.number, 'email': myUser.email});
       print('User created successfully');
     } catch (e) {
       print(e.toString());
@@ -29,7 +29,7 @@ class UserMethodsSqflite implements users_repo {
   @override
   Future<void> editUser(User myUser) async {
     try {
-      await _dbService.update(collections().user, myUser.id, myUser.toMap());
+      await _dbService.update(collections().user, myUser.id, {'id': myUser.id, 'number': myUser.number, 'email': myUser.email});
       print('User updated successfully');
     } catch (e) {
       print(e.toString());
