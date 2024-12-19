@@ -1,14 +1,12 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
-import 'package:hediaty_sec/keys/api_keys.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
+import 'package:googleapis_auth/auth_io.dart';
+import 'package:hediaty_sec/keys/api_keys.dart';
 import 'package:hediaty_sec/models/data/collections.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
-import 'package:googleapis_auth/auth_io.dart';
 
 class FcmServices {
   FirebaseMessaging messaging = FirebaseMessaging.instance;

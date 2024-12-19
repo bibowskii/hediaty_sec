@@ -20,10 +20,10 @@ class CustomNavBar extends StatefulWidget {
 }
 
 class _CustomNavBarState extends State<CustomNavBar> {
-  // Initial selected index
+
   int _selectedIndex = 2;
 
-  // List of screens
+
   final List<Widget> _screens = [
     EventListScreen(),
     FriendsListScreen(),
@@ -70,8 +70,8 @@ class _CustomNavBarState extends State<CustomNavBar> {
         ],
       ),
       body: IndexedStack(
-        index: _selectedIndex, // Show screen corresponding to selected index
-        children: _screens, // The screens are maintained here
+        index: _selectedIndex,
+        children: _screens,
       ),
       bottomNavigationBar: CurvedNavigationBar(
         index: _selectedIndex,
@@ -92,7 +92,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
         animationDuration: Duration(milliseconds: 500),
         onTap: (index) {
           setState(() {
-            _selectedIndex = index; // Update the selected index
+            _selectedIndex = index;
           });
         },
       ),

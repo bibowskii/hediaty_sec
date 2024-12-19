@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/friend_profile/friend_Profile.dart';
 import 'package:hediaty_sec/screens/notifications_screen/notifications_controller.dart';
 import 'package:hediaty_sec/services/image_to_stringVV.dart';
+import 'package:provider/provider.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});

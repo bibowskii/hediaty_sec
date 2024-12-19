@@ -1,6 +1,6 @@
 import 'package:hediaty_sec/models/data/collections.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
 class SQLiteService {
   static final SQLiteService _instance = SQLiteService._internal();

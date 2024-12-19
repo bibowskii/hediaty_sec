@@ -17,22 +17,23 @@ class loginPage extends StatefulWidget {
   loginPage({super.key});
 
   @override
-  State<loginPage> createState() => _loginPageState();
+  State<loginPage> createState() => _LoginPageState();
 }
 
-class _loginPageState extends State<loginPage> {
+class _LoginPageState extends State<loginPage> {
+  String? errorMessage;
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    String? errorMessage = ' ';
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-
     return Scaffold(
       backgroundColor: context.watch<theme>().dark
           ? CupertinoColors.darkBackgroundGray
           : CupertinoColors.extraLightBackgroundGray,
-
-      //backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -95,163 +96,167 @@ class _loginPageState extends State<loginPage> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 50),
-                  const Text(
-                    'Enter Your email',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  CustomTextField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
-                      }
-                      if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}')
-                          .hasMatch(value)) {
-                        return 'Please enter a valid email';
-                      }
-                      return null;
-                    },
-                    isObsecure: false,
-                    controller: emailController,
-                    hintText: "e.g bibo@example.com",
-                    icon: Iconsax.mobile,
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Enter Your Password',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  CustomTextField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
-                      }
-                      if (value.length < 6) {
-                        return 'Password must be at least 6 characters';
-                      }
-                      return null;
-                    },
-                    isObsecure: true,
-                    controller: passwordController,
-                    hintText: "Password",
-                    icon: Icons.lock_outline,
-                  ),
-                  const SizedBox(height: 10),
-                  const Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      "Forgot Password?",
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 50),
+                    const Text(
+                      'Enter Your email',
                       style: TextStyle(
-                        color: Colors.lightGreen,
-                        fontSize: 12,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  if (errorMessage != null && errorMessage!.isNotEmpty)
-                    Text(
-                      errorMessage!,
-                      style: const TextStyle(
-                        color: Colors.red,
-                        fontSize: 14,
-                      ),
-                    ),
-                  const SizedBox(height: 20),
-                  Center(
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            WidgetStateProperty.all(Colors.lightGreenAccent),
-                        foregroundColor: WidgetStateProperty.all(Colors.black),
-                      ),
-                      //until login validation is implemented
-                      onPressed: () async {
-                        try {
-                          await authService().signIn(
-                            email: emailController.text,
-                            password: passwordController.text,
-                          );
-                          UserManager().setUserId(FirebaseAuth.instance.currentUser!.uid);
-                          var signalid = await OneSignalServices().getPlayerID();
-                          await OneSignalServices().saveOneSignalPlayerId(signalid);
-                          final accessToken = await FirebaseAuth.instance.currentUser!.getIdToken();
-                          context.read<AccessTokenProvider>().setAccessToken(accessToken!);
-                        } on FirebaseAuthException catch (e) {
-                          setState(() {
-                            switch (e.code) {
-                              case 'user-not-found':
-                                errorMessage =
-                                    'No user found for that email, try creating an account.';
-                                break;
-                              case 'wrong-password':
-                                errorMessage = 'Wrong email or password.';
-                                break;
-                              default:
-                                errorMessage = 'Error signing in: ${e.message}';
-                            }
-                          });
+                    CustomTextField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your email';
                         }
+                        if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}')
+                            .hasMatch(value)) {
+                          return 'Please enter a valid email';
+                        }
+                        return null;
                       },
-                      child: const Text("Login"),
+                      isObsecure: false,
+                      controller: emailController,
+                      hintText: "e.g bibo@example.com",
+                      icon: Iconsax.mobile,
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Divider(
-                      height: 2,
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Enter Your Password',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Custombutton(
-                          ss: ' login with facebook',
-                          URL: 'lib/assets/icons/facebook.svg',
+                    CustomTextField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your password';
+                        }
+                        if (value.length < 6) {
+                          return 'Password must be at least 6 characters';
+                        }
+                        return null;
+                      },
+                      isObsecure: true,
+                      controller: passwordController,
+                      hintText: "Password",
+                      icon: Icons.lock_outline,
+                    ),
+                    const SizedBox(height: 10),
+                    const Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        "Forgot Password?",
+                        style: TextStyle(
+                          color: Colors.lightGreen,
+                          fontSize: 12,
                         ),
-                        Custombutton(
-                          ss: ' login with Google',
-                          URL: 'lib/assets/icons/google.svg',
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    if (errorMessage != null && errorMessage!.isNotEmpty)
+                      Text(
+                        errorMessage!,
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontSize: 14,
+                        ),
+                      ),
+                    const SizedBox(height: 20),
+                    Center(
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                          MaterialStateProperty.all(Colors.lightGreenAccent),
+                          foregroundColor: MaterialStateProperty.all(Colors.black),
+                        ),
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            try {
+                              await authService().signIn(
+                                email: emailController.text,
+                                password: passwordController.text,
+                              );
+                              UserManager().setUserId(FirebaseAuth.instance.currentUser!.uid);
+                              var signalid = await OneSignalServices().getPlayerID();
+                              await OneSignalServices().saveOneSignalPlayerId(signalid);
+                              final accessToken = await FirebaseAuth.instance.currentUser!.getIdToken();
+                              context.read<AccessTokenProvider>().setAccessToken(accessToken!);
+                            } on FirebaseAuthException catch (e) {
+                              setState(() {
+                                switch (e.code) {
+                                  case 'user-not-found':
+                                    errorMessage =
+                                    'No user found for that email, try creating an account.';
+                                    break;
+                                  case 'wrong-password':
+                                    errorMessage = 'Wrong email or password.';
+                                    break;
+                                  default:
+                                    errorMessage = 'Error signing in: ${e.message}';
+                                }
+                              });
+                            }
+                          }
+                        },
+                        child: const Text("Login"),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Divider(
+                        height: 2,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Custombutton(
+                            ss: ' login with facebook',
+                            URL: 'lib/assets/icons/facebook.svg',
+                          ),
+                          Custombutton(
+                            ss: ' login with Google',
+                            URL: 'lib/assets/icons/google.svg',
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          height: 60,
+                        ),
+                        const Text("Don't Have an account?"),
+                        GestureDetector(
+                          child: const Text(
+                            ' Signup now',
+                            style: TextStyle(
+                              color: Colors.lightGreenAccent,
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const SignUpScreen()),
+                            );
+                          },
                         ),
                       ],
                     ),
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        height: 60,
-                      ),
-                      const Text("Don't Have an account?"),
-                      GestureDetector(
-                        child: const Text(
-                          ' Signup now',
-                          style: TextStyle(
-                            color: Colors.lightGreenAccent,
-                          ),
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SignUpScreen()),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

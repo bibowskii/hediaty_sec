@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
 
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -40,11 +40,7 @@ class MyApp extends StatelessWidget {
             context.watch<theme>().dark ? ThemeData.dark() : ThemeData.light(),
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-/*      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),*/
-      initialRoute: '/', // Initial route
+      initialRoute: '/',
       routes: {
         '/': (context) => SplashScreen(),
         '/home': (context) => AuthWrapper(),
@@ -52,8 +48,8 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MediaQuery.withClampedTextScaling(
           child: child!,
-          minScaleFactor: 0.7, // Minimum scale factor
-          maxScaleFactor: 1.0, // Maximum scale factor
+          minScaleFactor: 0.7,
+          maxScaleFactor: 1.0,
         );
 
       },

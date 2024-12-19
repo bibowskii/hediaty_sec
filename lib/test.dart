@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:hediaty_sec/services/unused/one_signal_service.dart';
-import 'package:hediaty_sec/services/shared_prefs_service.dart';
-import 'package:hediaty_sec/services/user_manager.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:hediaty_sec/services/shared_prefs_service.dart';
+import 'package:hediaty_sec/services/unused/one_signal_service.dart';
+import 'package:hediaty_sec/services/user_manager.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

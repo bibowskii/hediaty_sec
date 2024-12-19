@@ -1,8 +1,8 @@
 import 'package:hediaty_sec/models/data/Event.dart';
 import 'package:hediaty_sec/models/data/collections.dart';
-import 'package:hediaty_sec/models/data/users.dart';
 import 'package:hediaty_sec/models/domain/event_methods.dart';
 import 'package:hediaty_sec/models/repository/event_repo.dart';
+
 import 'db_helper.dart';
 
 final SQLiteService _sqliteService = SQLiteService();

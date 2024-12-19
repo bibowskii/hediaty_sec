@@ -1,5 +1,6 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:convert';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 
 class FirebaseMessagingService {

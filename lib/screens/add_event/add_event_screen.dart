@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hediaty_sec/models/data/Event.dart';
 import 'package:hediaty_sec/models/domain/event_methods.dart';
-import 'package:hediaty_sec/models/local_db/db_helper.dart';
 import 'package:hediaty_sec/models/local_db/event_local_db.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/Event_details/event_details_screen.dart';
@@ -10,8 +9,6 @@ import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:hediaty_sec/widgets/textField.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-
-import '../../models/data/collections.dart';
 
 class addEventScreen extends StatefulWidget {
   const addEventScreen({super.key});
@@ -48,9 +45,6 @@ class _addEventScreenState extends State<addEventScreen> {
       'Sports Event',
       'Festival',
     ];
-
-    // Selected category
-
 
 
 
@@ -103,7 +97,7 @@ class _addEventScreenState extends State<addEventScreen> {
                     DropdownButton<String>(
                       value: _selectedEventCategory,
                       hint: Text('Select an event category'),
-                      isExpanded: true, // Makes the dropdown fill the available width
+                      isExpanded: true,
                       items: _eventCategories.map((String category) {
                         return DropdownMenuItem<String>(
                           value: category,

@@ -21,7 +21,7 @@ class NotificationsController {
       var friendsMap = await Follow().getFollowers(UserManager().getUserId()!);
       var followersList = friendsMap.map((map) => Friend.fromMap(map)).toList();
 
-      // Fetch all follower profiles in parallel
+
       List<Future<User>> followerFutures = followersList.map((follower) async {
         dynamic friendProfile = await userMethods().getUserByID(follower.UserID!);
         return User.fromMap(friendProfile);
@@ -29,7 +29,6 @@ class NotificationsController {
 
       followers = await Future.wait(followerFutures);
     } catch (e) {
-      // Handle error appropriately (log or return empty list)
       print('Error fetching followers: $e');
     }
 
@@ -46,7 +45,7 @@ class NotificationsController {
       var giftMap = await giftMethods().getGifts(myUser);
       var gifts = giftMap.map((map) => Gift.fromMap(map)).toList();
 
-      // Fetch all pledger profiles in parallel
+
       List<Future<User>> pledgerFutures = gifts.map((gift) async {
         dynamic friendProfile = await userMethods().getUserByID(gift.pledgedBy!);
         return User.fromMap(friendProfile);
@@ -54,7 +53,7 @@ class NotificationsController {
 
       pledgers = await Future.wait(pledgerFutures);
     } catch (e) {
-      // Handle error appropriately (log or return empty list)
+
       print('Error fetching pledgers: $e');
     }
 

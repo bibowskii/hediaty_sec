@@ -6,6 +6,7 @@ import 'package:hediaty_sec/screens/gift_details/pledge_button.dart';
 import 'package:hediaty_sec/screens/update_gift/edit_gift_screen.dart';
 import 'package:hediaty_sec/services/image_to_stringVV.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
+
 import '../../models/data/Gifts.dart';
 
 class GiftDetails extends StatefulWidget {

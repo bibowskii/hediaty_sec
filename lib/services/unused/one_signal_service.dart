@@ -1,11 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
 import 'package:hediaty_sec/keys/api_keys.dart';
 import 'package:hediaty_sec/models/data/collections.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
+import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class OneSignalServices {

@@ -36,7 +36,7 @@ class _myGiftsState extends State<myGifts> {
             : CupertinoColors.extraLightBackgroundGray,
         body: Padding(
           padding: const EdgeInsets.all(16),
-          child: SingleChildScrollView( // Make the content scrollable
+          child: SingleChildScrollView(
             child: Wrap(
               spacing: 8,
               runSpacing: 8,

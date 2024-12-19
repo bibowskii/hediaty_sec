@@ -15,7 +15,7 @@ class PledgedGiftsScreen extends StatefulWidget {
 }
 
 class _PledgedGiftsScreenState extends State<PledgedGiftsScreen> {
-  String selectedCategory = 'All'; // Default category to show all gifts
+  String selectedCategory = 'All';
 
   final List<String> categories = [
     'All', 'Electronics', 'Books', 'Clothing', 'Toys',
@@ -68,9 +68,9 @@ class _PledgedGiftsScreenState extends State<PledgedGiftsScreen> {
               runSpacing: 8,
               children: PledgdGiftsScreenController.instance.pledgedGifts
                   .where((gift) {
-                // If 'All' is selected, show all gifts
+
                 if (selectedCategory == 'All') return true;
-                // Filter gifts by category
+
                 return gift.category == selectedCategory;
               })
                   .map(

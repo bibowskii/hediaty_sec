@@ -2,9 +2,10 @@ import 'package:hediaty_sec/models/data/Event.dart';
 import 'package:hediaty_sec/models/data/Gifts.dart';
 import 'package:hediaty_sec/models/data/collections.dart';
 import 'package:hediaty_sec/models/repository/gifts_repo.dart';
+import 'package:hediaty_sec/services/user_manager.dart';
+
 import '../data/users.dart';
 import 'db_helper.dart';
-import 'package:hediaty_sec/services/user_manager.dart';
 
 class GiftMethods implements gifts_repo  {
   final SQLiteService _sqliteService = SQLiteService();

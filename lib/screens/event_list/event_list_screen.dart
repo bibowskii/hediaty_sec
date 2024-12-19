@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hediaty_sec/models/data/Event.dart';
 import 'package:hediaty_sec/models/local_db/event_local_db.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/Event_details/event_details_screen.dart';
 import 'package:hediaty_sec/screens/event_list/draft_event_list_controller.dart';
 import 'package:hediaty_sec/screens/event_list/event_list_controller.dart';
 import 'package:provider/provider.dart';
-import 'package:hediaty_sec/models/data/Event.dart';
 
 class EventListScreen extends StatefulWidget {
   const EventListScreen({super.key});

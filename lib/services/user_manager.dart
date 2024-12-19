@@ -11,20 +11,20 @@ class UserManager {
 
   UserManager._internal();
 
-  // Load user ID from Firebase Authentication or SharedPreferences
+
   Future<void> loadUser() async {
     final firebase_auth.User? user = firebase_auth.FirebaseAuth.instance.currentUser;
     if (user != null) {
       currentUserId = user.uid;
-      // Optionally save user ID to SharedPreferences for persistence
+
       _saveUserIdToPrefs(currentUserId);
     } else {
-      // Load user ID from SharedPreferences if not logged in
+
       _loadUserIdFromPrefs();
     }
   }
 
-  // Save user ID to SharedPreferences for persistence
+
   Future<void> _saveUserIdToPrefs(String? userId) async {
     if (userId != null) {
       final prefs = await SharedPreferences.getInstance();
@@ -32,19 +32,18 @@ class UserManager {
     }
   }
 
-  // Load user ID from SharedPreferences
+
   Future<void> _loadUserIdFromPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     currentUserId = prefs.getString('currentUserId');
   }
 
-  // Set the user ID
+
   Future<void> setUserId(String userId) async {
     currentUserId = userId;
     _saveUserIdToPrefs(currentUserId);
   }
 
-  // Get the current user ID
   String? getUserId() {
     return currentUserId;
   }

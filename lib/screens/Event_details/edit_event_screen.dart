@@ -99,7 +99,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                     DropdownButton<String>(
                       value: _selectedEventCategory,
                       hint: Text('Select an event category'),
-                      isExpanded: true, // Makes the dropdown fill the available width
+                      isExpanded: true,
                       items: _eventCategories.map((String category) {
                         return DropdownMenuItem<String>(
                           value: category,
@@ -130,6 +130,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                           content: Text('Event Edited Successfully!'),
                           backgroundColor: Colors.green,
                         );
+                        Navigator.pop(context);
                         // Navigate to event page details later
                       },
                       child: Text('Update Event'),
