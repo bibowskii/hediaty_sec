@@ -9,7 +9,7 @@ class EventDetailsController{
   EventDetailsController._();
 
   List<Gift> gifts = [];
-
+  bool isPledgded= false;
   Future<void> getGifts(Event myEvent) async{
    try {
      var giftMap = await giftMethods().getGiftsForEvent(myEvent);
@@ -19,6 +19,26 @@ class EventDetailsController{
 
    }
   }
+
+  Future<void> checkIfPledged(Event myEvent) async {
+    var gifts = await giftMethods().getGiftsForEvent(myEvent);
+
+    if (gifts.isEmpty) {
+      isPledgded = true;
+      return;
+    }
+
+    for (var gift in gifts) {
+      var k = Gift.fromMap(gift);
+      if (k.pledgedBy != null || k.pledgedBy != '') {
+        isPledgded = false;
+        return; // Exit early since we found a pledged gift
+      }
+    }
+
+    isPledgded = true;
+  }
+
 
 
 

@@ -2,21 +2,24 @@ import 'package:hediaty_sec/models/data/collections.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class SQLiteService {
-  static final SQLiteService _instance = SQLiteService._internal();
-  factory SQLiteService() => _instance;
-  SQLiteService._internal();
+class DatabaseHelper {
+  static final DatabaseHelper _instance = DatabaseHelper._internal();
+  factory DatabaseHelper() => _instance;
 
-  Database? _db;
+  DatabaseHelper._internal();
+
+  static Database? _database;
 
   Future<Database> get database async {
-    if (_db != null) return _db!;
-    _db = await _initDatabase();
-    return _db!;
+    if (_database != null) return _database!;
+    _database = await _initDatabase();
+    return _database!;
   }
 
   Future<Database> _initDatabase() async {
-    String path = join(await getDatabasesPath(), 'app_database.db');
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, 'app_users.db');
+
     return await openDatabase(
       path,
       version: 1,
@@ -25,38 +28,43 @@ class SQLiteService {
   }
 
   Future<void> _createTables(Database db, int version) async {
+    // Check if tables already exist, create if not
+    await _createUserTable(db);
+    await _createEventTable(db);
+    await _createGiftsTable(db);
+    await _createFriendsTable(db);
+  }
 
-    // Users table
-    await db.execute('''
-      CREATE TABLE ${collections().user} (
+  Future<void> _createUserTable(Database db) async {
+    await db.execute(''' 
+      CREATE TABLE IF NOT EXISTS ${collections().user} (
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
         email TEXT NOT NULL UNIQUE,
         preferences TEXT
       )
-    '''
-    );
+    ''');
+  }
 
-    // Events table
-    await db.execute('PRAGMA foreign_keys = ON;');  // Enable foreign key constraints
+  Future<void> _createEventTable(Database db) async {
+    await db.execute('PRAGMA foreign_keys = ON;'); // Enable foreign key constraints
 
-    await db.execute('''
-  CREATE TABLE ${collections().event} (
-    id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    date TEXT NOT NULL,
-    location TEXT,
-    description TEXT,
-    UserID TEXT,
-    category TEXT
-  )
-''');
+    await db.execute(''' 
+      CREATE TABLE IF NOT EXISTS ${collections().event} (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        date TEXT NOT NULL,
+        location TEXT,
+        description TEXT,
+        UserID TEXT,
+        category TEXT
+      )
+    ''');
+  }
 
-
-
-    // Gifts table
-    await db.execute('''
-      CREATE TABLE ${collections().gifts} (
+  Future<void> _createGiftsTable(Database db) async {
+    await db.execute(''' 
+      CREATE TABLE IF NOT EXISTS ${collections().gifts} (
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
         description TEXT,
@@ -66,20 +74,24 @@ class SQLiteService {
         event_id TEXT,
         FOREIGN KEY (event_id) REFERENCES Events (id) ON DELETE CASCADE
       )
-    '''
-    );
+    ''');
+  }
 
-    // Friends table
-    await db.execute('''
-      CREATE TABLE ${collections().friends} (
+  Future<void> _createFriendsTable(Database db) async {
+    await db.execute(''' 
+      CREATE TABLE IF NOT EXISTS ${collections().friends} (
         user_id TEXT,
         friend_id TEXT,
         PRIMARY KEY (user_id, friend_id),
         FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE,
         FOREIGN KEY (friend_id) REFERENCES Users (id) ON DELETE CASCADE
       )
-    '''
-    );
+    ''');
+  }
+
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    // Handle upgrades if needed in the future
+    // You can add logic for migrations here
   }
 
   Future<int> insert(String table, Map<String, dynamic> data) async {
@@ -152,7 +164,6 @@ class SQLiteService {
     final db = await database;
     await db.close();
   }
-
 
   Future<void> deleteTable(String tableName) async {
     // Get a reference to the database

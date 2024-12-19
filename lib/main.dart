@@ -19,7 +19,8 @@ void main() async {
   OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
   OneSignal.initialize(APIKeys().oneSignalAppId);
   OneSignal.Notifications.requestPermission(true);
-  SQLiteService().database;
+  final dbHelper = DatabaseHelper();
+
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => AccessTokenProvider()),

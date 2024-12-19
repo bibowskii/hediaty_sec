@@ -8,7 +8,7 @@ import '../data/users.dart';
 import 'db_helper.dart';
 
 class GiftMethods implements gifts_repo  {
-  final SQLiteService _sqliteService = SQLiteService();
+  final DatabaseHelper _sqliteService = DatabaseHelper();
 
   @override
   Future<void> createGift(Gift myGift) async {

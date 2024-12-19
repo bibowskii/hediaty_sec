@@ -5,7 +5,7 @@ import 'package:hediaty_sec/models/repository/users_repository.dart';
 import 'db_helper.dart';
 
 class UserMethodsSqflite implements users_repo {
-  final SQLiteService _dbService = SQLiteService();
+  final DatabaseHelper _dbService = DatabaseHelper();
 
   @override
   Future<void> createUser(User myUser) async {

@@ -5,7 +5,7 @@ import 'package:hediaty_sec/models/repository/friends_repo.dart';
 
 import 'db_helper.dart';
 
-final SQLiteService _sqliteService = SQLiteService();
+final DatabaseHelper _sqliteService = DatabaseHelper();
 
 class Follow implements friendsRepo {
   @override

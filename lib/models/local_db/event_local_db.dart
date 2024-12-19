@@ -5,7 +5,7 @@ import 'package:hediaty_sec/models/repository/event_repo.dart';
 
 import 'db_helper.dart';
 
-final SQLiteService _sqliteService = SQLiteService();
+final DatabaseHelper _sqliteService = DatabaseHelper();
 
 class EventMethodsLocal implements eventRepo {
   // Create an event
@@ -61,7 +61,7 @@ class EventMethodsLocal implements eventRepo {
   Future<List<Map<String, dynamic>>> getListEvents(String userID) async {
     List<Map<String, dynamic>> events = [];
     try {
-      events = await _sqliteService.queryByAttribute(collections().event, 'user_id', userID);
+      events = await _sqliteService.queryByAttribute(collections().event, 'userID', userID);
       print('Events found for user in Local DB!');
     } catch (e) {
       print('Error fetching events: ${e.toString()}');

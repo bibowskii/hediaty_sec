@@ -30,6 +30,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
 
   Future<void> _fetchGifts() async {
     await EventDetailsController.instance.getGifts(widget.event);
+    await EventDetailsController.instance.checkIfPledged(widget.event);
     setState(() {});
   }
 
@@ -73,13 +74,14 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   icon: const Icon(Icons.edit))
               : Container(),
           widget.event.userID == UserManager().getUserId()
-              ? IconButton(
-              onPressed: () {
-                giftMethods().deleteALLGiftsByEventID(widget.event.id);
-                eventMethods().deleteEvent(widget.event);
-                Navigator.pop(context);
-              },
-              icon: const Icon(Icons.delete))
+              ? EventDetailsController.instance.isPledgded == false
+                  ? Container() : IconButton(
+                      onPressed: () {
+                        giftMethods().deleteALLGiftsByEventID(widget.event.id);
+                        eventMethods().deleteEvent(widget.event);
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.delete))
               : Container()
         ],
       ),
@@ -187,6 +189,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                 child: GiftCard(
                                   name: gift.name,
                                   PledgedBy: gift.pledgedBy,
+                                  Status: gift.status,
                                   id: gift.id,
                                   ImageURl: gift.imgURl,
                                 ),
