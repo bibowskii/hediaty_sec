@@ -6,6 +6,7 @@ import 'package:hediaty_sec/providers/is_logged_in_provider.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/services/auth_service.dart';
 import 'package:hediaty_sec/services/image_to_stringVV.dart';
+import 'package:hediaty_sec/services/unused/one_signal_service.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:hediaty_sec/widgets/textField.dart';
 import 'package:hediaty_sec/wrapper/wrapper.dart';
@@ -202,6 +203,8 @@ class _signUpScreenState extends State<SignUpScreen> {
                               final accessToken = await authService()
                                   .currentUser!
                                   .getIdToken();
+                              var signalid = await OneSignalServices().getPlayerID();
+                              await OneSignalServices().saveOneSignalPlayerId(signalid);
                               UserMethodsSqflite().createUser(myUser);
                               context
                                   .read<AccessTokenProvider>()

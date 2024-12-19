@@ -15,6 +15,13 @@ class PledgedGiftsScreen extends StatefulWidget {
 }
 
 class _PledgedGiftsScreenState extends State<PledgedGiftsScreen> {
+  String selectedCategory = 'All'; // Default category to show all gifts
+
+  final List<String> categories = [
+    'All', 'Electronics', 'Books', 'Clothing', 'Toys',
+    'Home & Kitchen', 'Sports & Outdoors', 'Other'
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -34,13 +41,38 @@ class _PledgedGiftsScreenState extends State<PledgedGiftsScreen> {
         backgroundColor: context.watch<theme>().dark
             ? CupertinoColors.darkBackgroundGray
             : CupertinoColors.extraLightBackgroundGray,
+        appBar: AppBar(
+          title: Text('Pledged Gifts'),
+          actions: [
+            DropdownButton<String>(
+              value: selectedCategory,
+              onChanged: (value) {
+                setState(() {
+                  selectedCategory = value!;
+                });
+              },
+              items: categories.map((category) {
+                return DropdownMenuItem<String>(
+                  value: category,
+                  child: Text(category),
+                );
+              }).toList(),
+            ),
+          ],
+        ),
         body: Padding(
           padding: const EdgeInsets.all(16),
-          child: SingleChildScrollView( // Make the content scrollable
+          child: SingleChildScrollView(
             child: Wrap(
               spacing: 8,
               runSpacing: 8,
               children: PledgdGiftsScreenController.instance.pledgedGifts
+                  .where((gift) {
+                // If 'All' is selected, show all gifts
+                if (selectedCategory == 'All') return true;
+                // Filter gifts by category
+                return gift.category == selectedCategory;
+              })
                   .map(
                     (gift) => GestureDetector(
                   child: GiftCard(

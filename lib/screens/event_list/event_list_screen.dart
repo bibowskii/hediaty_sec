@@ -6,9 +6,7 @@ import 'package:hediaty_sec/screens/Event_details/event_details_screen.dart';
 import 'package:hediaty_sec/screens/event_list/draft_event_list_controller.dart';
 import 'package:hediaty_sec/screens/event_list/event_list_controller.dart';
 import 'package:provider/provider.dart';
-
 import 'package:hediaty_sec/models/data/Event.dart';
-
 
 class EventListScreen extends StatefulWidget {
   const EventListScreen({super.key});
@@ -16,8 +14,20 @@ class EventListScreen extends StatefulWidget {
   @override
   State<EventListScreen> createState() => _EventListScreenState();
 }
+
 class _EventListScreenState extends State<EventListScreen> {
   bool isLoading = true;
+  String selectedCategory = 'All'; // Default to 'All' category
+  List<String> categories = [
+    'All', // Option to show all events
+    'Conference',
+    'Workshop',
+    'Birthday Party',
+    'Wedding',
+    'Concert',
+    'Sports Event',
+    'Festival',
+  ];
 
   @override
   void initState() {
@@ -39,6 +49,15 @@ class _EventListScreenState extends State<EventListScreen> {
       isLoading = true;
     });
     await _fetchEvents();
+  }
+
+  // Filter events based on category
+  List<Event> _filterEvents(List<Event> events) {
+    if (selectedCategory == 'All') {
+      return events;
+    } else {
+      return events.where((event) => event.category == selectedCategory).toList();
+    }
   }
 
   // Show drafts in a bottom sheet
@@ -105,35 +124,66 @@ class _EventListScreenState extends State<EventListScreen> {
           ),
         ],
       ),
-      body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : events.isEmpty
-          ? Center(child: Text('No events found'))
-          : RefreshIndicator(
-        onRefresh: _onRefresh,
-        child: ListView.builder(
-          itemCount: events.length,
-          itemBuilder: (context, index) {
-            final event = events[index];
-            return ListTile(
-              leading: CircleAvatar(
-                child: Icon(CupertinoIcons.gift),
+      body: Column(
+        children: [
+          // Filter Bar
+          Container(
+            padding: EdgeInsets.all(8.0),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: categories.map((category) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: ChoiceChip(
+                      label: Text(category),
+                      selected: selectedCategory == category,
+                      onSelected: (selected) {
+                        setState(() {
+                          selectedCategory = selected ? category : 'All';
+                        });
+                      },
+                    ),
+                  );
+                }).toList(),
               ),
-              title: Text(event.name!),
-              subtitle: Text(event.date!.toString()),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EventDetailsScreen(event: event),
-                  ),
-                ).then((onValue) {
-                  setState(() {});
-                });
-              },
-            );
-          },
-        ),
+            ),
+          ),
+          // Event List
+          isLoading
+              ? Center(child: CircularProgressIndicator())
+              : events.isEmpty
+              ? Center(child: Text('No events found'))
+              : Expanded(
+            child: RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: ListView.builder(
+                itemCount: _filterEvents(events).length,
+                itemBuilder: (context, index) {
+                  final event = _filterEvents(events)[index];
+                  return ListTile(
+                    leading: CircleAvatar(
+                      child: Icon(CupertinoIcons.gift),
+                    ),
+                    title: Text(event.name!),
+                    subtitle: Text(event.date!.toString()),
+                    trailing: Text(event.date!.isAfter(DateTime.now())?'Upcoming!':'Past'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EventDetailsScreen(event: event),
+                        ),
+                      ).then((onValue) {
+                        setState(() {});
+                      });
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
