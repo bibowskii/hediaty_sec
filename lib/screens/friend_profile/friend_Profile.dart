@@ -9,7 +9,6 @@ import 'package:hediaty_sec/screens/friend_profile/friend_profile_controller.dar
 import 'package:hediaty_sec/services/FCM_services.dart';
 import 'package:hediaty_sec/services/image_to_stringVV.dart';
 import 'package:hediaty_sec/services/unused/FCM_class.dart';
-import 'package:hediaty_sec/services/unused/one_signal_service.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:provider/provider.dart';
 

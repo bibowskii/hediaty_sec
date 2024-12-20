@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hediaty_sec/models/data/collections.dart';
-import 'package:hediaty_sec/models/data/fcm.dart';
-import 'package:hediaty_sec/services/firebase_services.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 
 class UserFcmMethods {
