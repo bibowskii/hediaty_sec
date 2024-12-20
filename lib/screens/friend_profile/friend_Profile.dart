@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hediaty_sec/models/data/users.dart';
 import 'package:hediaty_sec/models/domain/friends_methods.dart';
+import 'package:hediaty_sec/models/repository/User_fcm_methods.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/Event_details/event_details_screen.dart';
 import 'package:hediaty_sec/screens/friend_profile/friend_profile_controller.dart';
 import 'package:hediaty_sec/services/FCM_services.dart';
 import 'package:hediaty_sec/services/image_to_stringVV.dart';
+import 'package:hediaty_sec/services/unused/FCM_class.dart';
 import 'package:hediaty_sec/services/unused/one_signal_service.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:provider/provider.dart';
@@ -139,10 +141,15 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
                     bool success;
                     if (FriendProfileController.instance.isFriend) {
                       success = await Follow().removeFriend(myFriend);
+                      var fcmToken = await UserFcmMethods().getUserFcmToken(myFriend.FriendID!);
+                      NotificationService.sendNotification('someone just unfollowed you, go buy them a Gift and Say sorry', fcmToken, 'You lost A Follower');
                       FcmServices().sendFCMMessage('you lost a follower', 'someone just unfollowed you, go buy them a Gift and Say sorry', widget.friend.id);
                     } else {
                       success = await Follow().followFriend(myFriend);
+                      var fcmToken = await UserFcmMethods().getUserFcmToken(myFriend.FriendID!);
+                      NotificationService.sendNotification('someone Just Followed you!', fcmToken, 'A new Follower');
                       FcmServices().sendFCMMessage('A new Follower', 'Someone Just Followed you!', widget.friend.id);
+
                     }
 
                     if (success) {

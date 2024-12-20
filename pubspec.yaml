@@ -58,6 +58,8 @@ dependencies:
   googleapis: ^13.2.0
   firebase_admin: ^0.3.0
   permission_handler: ^11.3.1
+  dio: ^5.7.0
+  generator_test: ^0.3.1
   #flutter_local_notifications: ^18.0.1
   #flutter_secure_storage: ^4.2.1
 

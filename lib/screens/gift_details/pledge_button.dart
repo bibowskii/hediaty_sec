@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hediaty_sec/models/data/Gifts.dart';
 import 'package:hediaty_sec/models/domain/gift_methods.dart';
+import 'package:hediaty_sec/models/repository/User_fcm_methods.dart';
 import 'package:hediaty_sec/screens/gift_details/gift_details_controller.dart';
 import 'package:hediaty_sec/services/FCM_services.dart';
+import 'package:hediaty_sec/services/unused/FCM_class.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 
 class PledgeButton extends StatefulWidget {
@@ -54,9 +56,11 @@ class _PledgeButtonState extends State<PledgeButton> {
 
       // Send appropriate FCM message
       if (newPledgeStatus) {
-        FcmServices().sendFCMMessage('A new Pledge!!', 'Someone Just Pledged you gift', userId);
+        FcmServices().sendFCMMessage('A new Pledge!!', 'Someone Just Pledged you gift', widget.myGift.userID );
+        String? fcmToken = await UserFcmMethods().getUserFcmToken(widget.myGift.userID);
+        NotificationService.sendNotification('Someone Just Pledged you gift', fcmToken, 'A new Pledge!!');
       } else {
-        FcmServices().sendFCMMessage('Someone unpledged!!', 'Did you hurt them? Go buy them a gift and say sorry', userId);
+        FcmServices().sendFCMMessage('Someone unpledged!!', 'Did you hurt them? Go buy them a gift and say sorry', widget.myGift.userID);
       }
 
       // Show success message
