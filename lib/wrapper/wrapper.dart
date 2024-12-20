@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hediaty_sec/models/repository/User_fcm_methods.dart';
 import 'package:hediaty_sec/screens/login/loginPage.dart';
+import 'package:hediaty_sec/services/FCM_services.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 import 'package:hediaty_sec/widgets/customNavBar.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({super.key});
+
 
   Future<void> _fetchAndStoreFcmToken(BuildContext context) async {
     try {
@@ -21,6 +23,7 @@ class AuthWrapper extends StatelessWidget {
           await UserFcmMethods().SaveFCMToken(token);
           debugPrint("FCM Token fetched and stored: $token");
         }
+        FcmServices().subscribeToTopic('news');
       }
     } catch (e) {
       debugPrint('Error fetching or storing FCM token: $e');

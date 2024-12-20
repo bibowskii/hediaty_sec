@@ -90,8 +90,6 @@ flutter:
   assets:
     - lib/assets/icons/
     - lib/assets/splashScreen/
-    - lib/keys/hediaty-5941a-944a3c0e0c91.json
-    - lib/keys/hediaty-5941a-9ed9b91589d7.json
     - lib/keys/
 
 

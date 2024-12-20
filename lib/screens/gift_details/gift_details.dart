@@ -33,7 +33,7 @@ class _GiftDetailsState extends State<GiftDetails> {
   Future<void> _initGiftDetails() async {
     try {
       isPledged =
-          await GiftDetailsController.instance.checkIfPledged(widget.myGift);
+      await GiftDetailsController.instance.checkIfPledged(widget.myGift);
       isPledgedByUser = await GiftDetailsController.instance
           .checkIfPledgedByUser(widget.myGift);
     } catch (error) {
@@ -172,13 +172,15 @@ class _GiftDetailsState extends State<GiftDetails> {
       child: GestureDetector(
         child: PledgeButton(myGift: widget.myGift),
         onTap: () async {
-          setState(() {
+          setState(() async{
             widget.myGift.pledgedBy =
-                widget.myGift.pledgedBy == null || widget.myGift.pledgedBy == ''
-                    ? UserManager().getUserId()
-                    : '';
+            widget.myGift.pledgedBy == null || widget.myGift.pledgedBy == ''
+                ? UserManager().getUserId()
+                : '';
+            await _refreshGiftDetails();
           });
-          await _refreshGiftDetails();
+
+
         },
       ),
     );

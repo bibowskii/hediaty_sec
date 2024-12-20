@@ -6,9 +6,8 @@ import 'package:hediaty_sec/screens/gift_details/gift_details_controller.dart';
 import 'package:hediaty_sec/services/FCM_services.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 
-
 class PledgeButton extends StatefulWidget {
-   final Gift myGift;
+  final Gift myGift;
 
   PledgeButton({required this.myGift});
 
@@ -23,58 +22,65 @@ class _PledgeButtonState extends State<PledgeButton> {
   @override
   void initState() {
     super.initState();
-
+    // Initialize pledge state from the GiftDetailsController instance
     isPledged = GiftDetailsController.instance.isPledged;
     isPledgedByUser = GiftDetailsController.instance.isPledgedByUser;
   }
 
+  // Optimized pledge/unpledge action
+  void pledgeAction() async {
+    final userId = UserManager().getUserId();
+    if (userId == null) {
+      // Show error if the user is not logged in
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('User not logged in.')),
+      );
+      return;
+    }
 
-  void updatePledgeState() {
-    setState(() {
-      isPledged = GiftDetailsController.instance.isPledged;
-      isPledgedByUser = GiftDetailsController.instance.isPledgedByUser;
-    });
-  }
+    widget.myGift.pledgedBy = userId;
 
-  void pledgeAction(){
-    giftMethods().pledge;
-    FcmServices().sendFCMMessage('A new Pledge!!', 'Someone Just Pledged you gift', widget.myGift.userID);
+    try {
+      // Determine if the action is to pledge or unpledge
+      bool newPledgeStatus = !isPledged;
+      bool newPledgeByUserStatus = !isPledgedByUser;
+
+      // Perform the pledge/unpledge action
+      await (newPledgeStatus ? giftMethods().pledge : giftMethods().unpledge)(widget.myGift);
+
+      // Update the state of the pledge
+      GiftDetailsController.instance.isPledged = newPledgeStatus;
+      GiftDetailsController.instance.isPledgedByUser = newPledgeByUserStatus;
+
+      // Send appropriate FCM message
+      if (newPledgeStatus) {
+        FcmServices().sendFCMMessage('A new Pledge!!', 'Someone Just Pledged you gift', userId);
+      } else {
+        FcmServices().sendFCMMessage('Someone unpledged!!', 'Did you hurt them? Go buy them a gift and say sorry', userId);
+      }
+
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Pledge action was successful!')),
+      );
+
+
+      setState(() {
+        isPledged = newPledgeStatus;
+        isPledgedByUser = newPledgeByUserStatus;
+      });
+    } catch (e) {
+      // Handle errors
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to perform pledge action: ${e.toString()}')),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {
-        final userId = UserManager().getUserId();
-        if (userId != null) {
-          widget.myGift.pledgedBy = userId;
-          try {
-            final giftMethod = GiftDetailsController.instance.isPledged
-                ? giftMethods().unpledge  // Unpledge if already pledged
-                : giftMethods().pledge; // Pledge if not pledged
-            await giftMethod(widget.myGift);
-            GiftDetailsController.instance.isPledged?
-            FcmServices().sendFCMMessage('Someone unpledged!!', 'Did you hurt them? Go buy them a gift and say sorry', userId):
-            FcmServices().sendFCMMessage('A new Pledge!!', 'Someone Just Pledged you gift', userId);
-            GiftDetailsController.instance.isPledged = !GiftDetailsController.instance.isPledged;
-            GiftDetailsController.instance.isPledgedByUser = GiftDetailsController.instance.isPledgedByUser;
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Pledge action was successful!')),
-            );
-            updatePledgeState();
-          } catch (e) {
-
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Failed to perform pledge action: ${e.toString()}')),
-            );
-          }
-        } else {
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('User not logged in.')),
-          );
-        }
-      },
+      onTap: pledgeAction,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300),
         width: 300,
