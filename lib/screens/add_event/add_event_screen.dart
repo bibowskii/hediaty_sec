@@ -60,15 +60,15 @@ class _addEventScreenState extends State<addEventScreen> {
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: CalendarDatePicker(
-                  initialDate: _selectedDate,
-                  firstDate: DateTime(_selectedDate.year, _selectedDate.month),
+                  initialDate: DateTime(_selectedDate.year, _selectedDate.month, 1),
+                  firstDate: DateTime(_selectedDate.year, _selectedDate.month, 1), // start of the selected month
                   lastDate: DateTime(9999, 12, 31),
                   onDateChanged: (DateTime newDate) {
                     setState(() {
                       _selectedDate = newDate;
                     });
                   },
-                ),
+                )
               ),
               Padding(
                 padding: EdgeInsets.all(10),

@@ -203,7 +203,9 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                       ),
                                     ),
                                   ).then((value) {
-                                    setState(() {});
+                                    setState(() {
+                                      _fetchGifts();
+                                    });
                                   });
                                 },
                               ),
