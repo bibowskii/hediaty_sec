@@ -56,6 +56,8 @@ dependencies:
   path_provider: ^2.1.5
   googleapis_auth: ^1.6.0
   googleapis: ^13.2.0
+  firebase_admin: ^0.3.0
+  permission_handler: ^11.3.1
   #flutter_local_notifications: ^18.0.1
   #flutter_secure_storage: ^4.2.1
 
@@ -89,6 +91,8 @@ flutter:
     - lib/assets/icons/
     - lib/assets/splashScreen/
     - lib/keys/hediaty-5941a-944a3c0e0c91.json
+    - lib/keys/hediaty-5941a-9ed9b91589d7.json
+    - lib/keys/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

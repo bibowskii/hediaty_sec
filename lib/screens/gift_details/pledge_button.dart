@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hediaty_sec/models/data/Gifts.dart';
 import 'package:hediaty_sec/models/domain/gift_methods.dart';
 import 'package:hediaty_sec/screens/gift_details/gift_details_controller.dart';
+import 'package:hediaty_sec/services/FCM_services.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
 
 
@@ -35,33 +36,31 @@ class _PledgeButtonState extends State<PledgeButton> {
     });
   }
 
+  void pledgeAction(){
+    giftMethods().pledge;
+    FcmServices().sendFCMMessage('A new Pledge!!', 'Someone Just Pledged you gift', widget.myGift.userID);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
         final userId = UserManager().getUserId();
-
         if (userId != null) {
           widget.myGift.pledgedBy = userId;
-
           try {
-
             final giftMethod = GiftDetailsController.instance.isPledged
                 ? giftMethods().unpledge  // Unpledge if already pledged
                 : giftMethods().pledge; // Pledge if not pledged
-
-
-
-
             await giftMethod(widget.myGift);
+            GiftDetailsController.instance.isPledged?
+            FcmServices().sendFCMMessage('Someone unpledged!!', 'Did you hurt them? Go buy them a gift and say sorry', userId):
+            FcmServices().sendFCMMessage('A new Pledge!!', 'Someone Just Pledged you gift', userId);
             GiftDetailsController.instance.isPledged = !GiftDetailsController.instance.isPledged;
             GiftDetailsController.instance.isPledgedByUser = GiftDetailsController.instance.isPledgedByUser;
-
-
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Pledge action was successful!')),
             );
-
             updatePledgeState();
           } catch (e) {
 

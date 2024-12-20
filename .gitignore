@@ -33,6 +33,8 @@ migrate_working_dir/
 lib/keys/api_keys.dart
 lib/keys/hediaty-5941a-firebase-adminsdk-i8ilg-c3a58516cd.json
 lib/keys/hediaty-5941a-944a3c0e0c91.json
+lib/keys/hediaty-5941a-9ed9b91589d7.json
+lib/services/FCM_services.dart
 
 # Symbolication related
 app.*.symbols

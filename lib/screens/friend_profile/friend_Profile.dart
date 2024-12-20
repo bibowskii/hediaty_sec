@@ -5,6 +5,7 @@ import 'package:hediaty_sec/models/domain/friends_methods.dart';
 import 'package:hediaty_sec/providers/theme_provider.dart';
 import 'package:hediaty_sec/screens/Event_details/event_details_screen.dart';
 import 'package:hediaty_sec/screens/friend_profile/friend_profile_controller.dart';
+import 'package:hediaty_sec/services/FCM_services.dart';
 import 'package:hediaty_sec/services/image_to_stringVV.dart';
 import 'package:hediaty_sec/services/unused/one_signal_service.dart';
 import 'package:hediaty_sec/services/user_manager.dart';
@@ -138,9 +139,10 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
                     bool success;
                     if (FriendProfileController.instance.isFriend) {
                       success = await Follow().removeFriend(myFriend);
+                      FcmServices().sendFCMMessage('you lost a follower', 'someone just unfollowed you, go buy them a Gift and Say sorry', widget.friend.id);
                     } else {
                       success = await Follow().followFriend(myFriend);
-                      OneSignalServices().pushNotification(widget.friend.id, 'A new follower', '${widget.friend.name} just followed you!');
+                      FcmServices().sendFCMMessage('A new Follower', 'Someone Just Followed you!', widget.friend.id);
                     }
 
                     if (success) {
